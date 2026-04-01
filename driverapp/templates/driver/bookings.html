@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function () {
+  const settings = JSON.parse(localStorage.getItem("settings"));
+  if (settings?.dark) {
+    document.documentElement.classList.add("dark");
+  }
+})();
+</script>
+<meta charset="UTF-8">
+<title>My Bookings</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+    :root {
+    --bg: #f2f2f2;
+    --card: #ffffff;
+    --text: #000000;
+    --sub: #555;
+}
+
+.dark {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #ffffff;
+    --sub: #cbd5f5;
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* HEADER */
+.header {
+    background: #1e3a8a;
+    color: white;
+    padding: 14px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.back-btn {
+    font-size: 22px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* CONTROLS */
+.controls {
+    padding: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.controls input,
+.controls select {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* SUMMARY */
+.summary {
+    padding: 0 12px;
+    font-size: 14px;
+    color: #444;
+}
+
+/* LIST */
+.container {
+    padding: 12px;
+}
+
+.booking-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.booking-title {
+    font-weight: bold;
+}
+
+.booking-date {
+    font-size: 13px;
+    color: #555;
+    margin: 4px 0;
+}
+
+.booking-status {
+    font-weight: bold;
+}
+
+.completed { color: #16a34a; }
+.cancelled { color: #dc2626; }
+.pending { color: #f59e0b; }
+
+.empty {
+    text-align: center;
+    color: #777;
+    margin-top: 40px;
+}
+
+/* ADD BUTTON */
+.add-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #1976ff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="back-btn" onclick="history.back()">←</div>
+    My Bookings
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+    <input type="text" id="searchInput" placeholder="Search booking...">
+    <select id="statusFilter">
+        <option value="all">All</option>
+        <option value="Completed">Completed</option>
+        <option value="Pending">Pending</option>
+        <option value="Cancelled">Cancelled</option>
+    </select>
+</div>
+
+<!-- SUMMARY -->
+<div class="summary" id="summaryText"></div>
+
+<!-- LIST -->
+<div class="container" id="bookingList"></div>
+
+<!-- ADD BUTTON -->
+<button class="add-btn" onclick="addBooking()">+</button>
+
+<script>
+/* ================= DATA ================= */
+const defaultBookings = [
+    { title: "Airport Pickup", date: "2026-01-10T10:30", status: "Completed" },
+    { title: "Office Drop", date: "2026-01-08T09:00", status: "Completed" },
+    { title: "City Ride", date: "2026-01-05T18:45", status: "Cancelled" },
+    { title: "Mall Visit", date: "2026-01-12T14:15", status: "Pending" }
+];
+
+let bookings = JSON.parse(localStorage.getItem("my_bookings")) || defaultBookings;
+save();
+
+/* ================= SAVE ================= */
+function save() {
+    localStorage.setItem("my_bookings", JSON.stringify(bookings));
+}
+
+/* ================= RENDER ================= */
+function render(list) {
+    const container = document.getElementById("bookingList");
+    container.innerHTML = "";
+
+    document.getElementById("summaryText").innerText =
+        `Total bookings: ${list.length}`;
+
+    if (!list.length) {
+        container.innerHTML = `<div class="empty">No bookings found</div>`;
+        return;
+    }
+
+    list.forEach(b => {
+        const card = document.createElement("div");
+        card.className = "booking-card";
+
+        const date = new Date(b.date).toLocaleString("en-IN");
+
+        card.innerHTML = `
+            <div class="booking-title">${b.title}</div>
+            <div class="booking-date">${date}</div>
+            <div class="booking-status ${b.status.toLowerCase()}">${b.status}</div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+/* ================= FILTER + SEARCH ================= */
+function applyFilters() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const status = document.getElementById("statusFilter").value;
+
+    let filtered = bookings.filter(b =>
+        b.title.toLowerCase().includes(search)
+    );
+
+    if (status !== "all") {
+        filtered = filtered.filter(b => b.status === status);
+    }
+
+    render(filtered);
+}
+
+/* ================= ADD BOOKING ================= */
+function addBooking() {
+    const title = prompt("Enter booking title");
+    if (!title) return;
+
+    const status = prompt("Status (Completed / Pending / Cancelled)", "Pending");
+
+    bookings.unshift({
+        title,
+        date: new Date().toISOString(),
+        status: status || "Pending"
+    });
+
+    save();
+    applyFilters();
+}
+
+/* ================= EVENTS ================= */
+document.getElementById("searchInput").addEventListener("input", applyFilters);
+document.getElementById("statusFilter").addEventListener("change", applyFilters);
+
+/* ================= INIT ================= */
+render(bookings);
+
+
+</script>
+
+</body>
+</html>

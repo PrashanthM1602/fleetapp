@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Trip Tracking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+body { margin:0; font-family: Arial; }
+
+.header {
+    position: fixed;
+    top:0;
+    width:100%;
+    background:#2563eb;
+    color:white;
+    padding:15px;
+    text-align:center;
+}
+
+#map {
+    position:absolute;
+    top:60px;
+    bottom:150px;
+    left:10px;
+    right:10px;
+    border-radius:12px;
+}
+
+.bottom {
+    position:fixed;
+    bottom:10px;
+    left:10px;
+    right:10px;
+    background:white;
+    padding:15px;
+    border-radius:12px;
+}
+
+button {
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    color:white;
+    border-radius:10px;
+}
+
+.end { background:red; }
+.nav { background:#2563eb; }
+</style>
+
+</head>
+
+<body>
+
+<div class="header">Trip in Progress</div>
+
+<div id="map"></div>
+
+<div class="bottom">
+    <div><b>Pickup:</b> <span id="pickupText"></span></div>
+    <div><b>Drop:</b> <span id="dropText"></span></div>
+
+    <button class="nav" onclick="openGoogleMaps()">📍 OPEN IN GOOGLE MAPS</button>
+    <button id="endBtn" class="end">END TRIP</button>
+</div>
+
+<script>
+
+// ===== CHECK STATUS =====
+if (localStorage.getItem("trip_status") !== "STARTED") {
+    alert("Trip not started");
+    window.location.href = "/driver/";
+}
+
+// ===== LOAD TRIP DATA =====
+const tripData = JSON.parse(localStorage.getItem("active_trip"));
+
+if (!tripData) {
+    alert("No trip data");
+    window.location.href = "/driver/";
+}
+
+document.getElementById("pickupText").innerText = tripData.pickup;
+document.getElementById("dropText").innerText = tripData.drop;
+
+const pickup = tripData.pickupCoords.map(Number);
+const drop = tripData.dropCoords.map(Number);
+
+// ===== GOOGLE MAPS =====
+function openGoogleMaps() {
+    const [lat, lng] = pickup;
+    window.open(`https://www.google.com/maps?q=${lat},${lng}`);
+}
+
+// ===== INIT MAP =====
+let map = L.map("map").setView(pickup, 14);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+    .addTo(map);
+
+// markers
+L.marker(pickup).addTo(map).bindPopup("Pickup").openPopup();
+L.marker(drop).addTo(map).bindPopup("Drop");
+
+// route
+L.polyline([pickup, drop], {
+    color: "blue",
+    weight: 4
+}).addTo(map);
+
+// driver marker
+let driverMarker = L.marker(pickup).addTo(map);
+
+// ===== AUTO GPS START (🔥 MAIN CHANGE) =====
+let watchId = null;
+
+if (navigator.geolocation) {
+    watchId = navigator.geolocation.watchPosition(
+        pos => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+
+            driverMarker.setLatLng([lat, lng]);
+            map.setView([lat, lng], 15);
+        },
+        err => {
+            console.log(err);
+            alert("Enable location permission");
+        },
+        { enableHighAccuracy: true }
+    );
+}
+
+// ===== END TRIP =====
+document.getElementById("endBtn").onclick = () => {
+    if (watchId) navigator.geolocation.clearWatch(watchId);
+
+    localStorage.setItem("trip_status", "COMPLETED");
+    localStorage.removeItem("active_trip");
+
+    alert("Trip Completed");
+    window.location.href = "/driver/";
+};
+
+</script>
+
+</body>
+</html>

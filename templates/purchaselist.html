@@ -1,0 +1,614 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase Items List</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body{
+     background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+     .table th, .table td {
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .action-btn {
+      background-color: #003cff;
+      color: white;
+      border: none;
+      padding: 4px 10px;
+      font-size: 13px;
+      border-radius: 4px;
+    }
+    .page-title {
+      font-weight: 600;
+      font-size: 20px;
+      padding: 15px 0;
+    }
+    .btn-add {
+      background-color: #003cff;
+      color: white;
+      margin-bottom: 10px;
+    }
+    .img-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+      body {
+      background-color: #f8f9fa;
+    }
+
+    .wizard-nav {
+      display: flex;
+      padding-left: 0;
+      list-style: none;
+      margin-bottom: 0;
+    }
+
+    body::before,
+body::after {
+    display: none; /* Removing abstract blurred blobs for a cleaner layout */
+}
+
+
+
+        .navbar {
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-right: 50px;
+        }
+        .navbar-brand span.v {
+            color: #ff9800;
+        }
+        .navbar-brand span.track360 {
+            color: rgba(229, 150, 65, 0.935);
+        }
+
+        /* Dashboard Button */
+        .dashboard-btn {
+            background: linear-gradient(45deg, #4CAF50, #2E8B57);
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(46, 139, 87, 0.7);
+        }
+        .dashboard-btn:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        }
+        /* Space between nav-items */
+.navbar-nav .nav-item {
+    margin-right: 15px; /* adjust spacing between items */
+    margin-top: 10px;
+}
+
+/* Padding inside nav links */
+.navbar-nav .nav-link {
+    padding: 8px 12px;
+    border-radius: 6px; /* keeps hover effect nice & rounded */
+}
+
+
+        .navbar-nav .nav-item .nav-link:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            border-radius: 10px;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        } 
+        /* Show dropdown on hover */
+  .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    
+    margin-top: 0; /* Remove Bootstrap's small offset */
+    animation: fadeInDown 0.3s ease-in-out;
+    border-radius: 15px;
+    z-index: 1001;
+    position: absolute;
+    
+    
+  }
+
+
+
+
+
+
+
+/* Optional: Add smooth animation */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+        /* Stylish Logout Button */
+        .logout-btn {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 65, 108, 0.7);
+        }
+        .logout-btn:hover {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 65, 108, 1);
+        }
+    body {
+      background-color: #f5f7fb;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+    }
+
+    .container-box {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      padding: 40px;
+      margin: 50px auto;
+      max-width: 1200px;
+    }
+
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .page-title {
+      font-weight: 700;
+      color: #1f2937;
+      font-size: 1.9rem;
+    }
+
+    .btn-add {
+      background-color: #0d6efd;
+      color: #fff;
+      border: none;
+      font-weight: 500;
+      border-radius: 8px;
+      padding: 10px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.3s;
+    }
+
+    .btn-add:hover {
+      background-color: #0b5ed7;
+    }
+
+    .search-bar {
+      width: 300px;
+      border-radius: 8px;
+      padding: 8px 14px;
+      border: 1px solid #ced4da;
+      transition: 0.3s;
+    }
+
+    .search-bar:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+      outline: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 8px;
+    }
+
+    thead th {
+      background-color: #e9ecef;
+      font-weight: 600;
+      text-align: center;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    tbody td {
+      text-align: center;
+      vertical-align: middle;
+      padding: 12px;
+      background-color: #fff;
+      border-top: 1px solid #dee2e6;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    tbody tr:hover {
+      background-color: #f1f3f5;
+      transform: translateY(-1px);
+      transition: 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .btn-action {
+      border: none;
+      background: none;
+      font-size: 1.2rem;
+      margin: 0 4px;
+      transition: 0.2s;
+    }
+
+    .btn-action:hover {
+      transform: scale(1.2);
+    }
+
+    .btn-delete {
+      color: #dc3545;
+    }
+
+    @media (max-width: 768px) {
+      .search-bar {
+        width: 100%;
+      }
+
+      .header-section {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+   .dropdown-submenu {
+  position: relative;
+}
+
+/* Hide submenu by default */
+.dropdown-submenu .dropdownn-menu {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%; /* Makes it pop out to the right */
+  margin-top: -5px;
+  min-width: 220px;
+  background-color: #fff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px);
+  transition: all 0.25s ease-in-out;
+  z-index: 1000;
+}
+
+/* Show submenu on hover */
+.dropdown-submenu:hover > .dropdownn-menu {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+/* Dropdown item design */
+.dropdown-submenu .dropdownn-item {
+  display: block;
+  padding: 8px 18px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect */
+.dropdown-submenu .dropdownn-item:hover {
+  background-color: #f8f9fa;
+  color: #0d6efd;
+}
+
+/* Remove any default bullet or circle symbol */
+.dropdown-submenu .dropdownn-item::before {
+  content: "";
+}
+
+/* Right arrow for submenu indicator */
+.dropdown-submenu > a::after {
+  {% comment %} content: "›"; {% endcomment %}
+  float: right;
+  font-size: 0.9rem;
+  opacity: 0.6;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.dropdown-submenu:hover > a::after {
+  transform: translateX(2px);
+  opacity: 1;
+}
+
+.dropdown-menu,
+.dropdownn-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+    
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <span class="v">V</span><span class="track360">Track360</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                  <li class="nav-item">
+                      <a class="nav-link dropdown-to" href="{% url 'dashboard' %}" id="mastersDropdown"  aria-expanded="false">
+                         <i class="bi bi-speedometer2">Dashboard</i> 
+                      </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="mastersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="bi bi-tools"></i> Masters
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="mastersDropdown">
+                <div id="main-content">
+                            <li><a class="dropdown-item" href="{% url 'manageparts' %}"><i class="bi bi-wrench-adjustable-circle"></i> Garage masters</a></li>
+                            <li><a class="dropdown-item" href="{% url 'create' %}"><i class="bi bi-truck-front-fill"></i> Vehicle Ownership</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inspection'%}"><i class="bi bi-compass"></i> Inspection types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'expense'%}"><i class="bi bi-graph-down-arrow"></i> Expense Types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'fueltype' %}"><i class="bi bi-fuel-pump-fill"></i> Fuel Types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'service' %}"><i class="bi bi-person-workspace"></i> Service Types</a></li>
+                            
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        
+                        <a class="nav-link dropdown-toggle" href="#" id="vehiclesDriversDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-truck"></i> Garage
+                        </a>                        
+                        <ul class="dropdown-menu" aria-labelledby="garageDropdown">
+                            <li><a class="dropdown-item" href="{% url 'inspection_create'%}"><i class="bi bi-plus-square-fill"></i> Create new Incpection</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inspection_list' %}"><i class="bi bi-list"></i> Incpection Requests </a></li>
+                            <li><a class="dropdown-item" href="{% url 'completed_inspection_list'%}"><i class="bi bi-grid-3x3-gap-fill"></i> Completed Inspections </a></li>
+                            <li><a class="dropdown-item" href="{% url  'newquat'%}"><i class="bi bi-plus-circle-fill"></i> Create New Quotation </a></li>
+                            <li><a class="dropdown-item" href="{% url  'quatlist'%}"><i class="bi bi-file-text me-2"></i> All Quotation </a></li>
+                            <li><a class="dropdown-item" href="{% url  'approved_quotations'%}"><i class="bi bi-check-circle"></i> Approved Quotations </a></li>
+                           
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="vehiclesDriversDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-truck"></i> Vehicles & Drivers
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="vehiclesDriversDropdown">
+                            <li><a class="dropdown-item" href="{% url 'add_vehicle'%}"><i class="bi bi-plus-square-fill"></i> Add New Vehicle</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_vehicles'%}"><i class="bi bi-truck"></i> Vehicles</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_drivers'%}"><i class="bi bi-person"></i> Drivers</a></li>
+                            <li><a class="dropdown-item" href="{% url 'driver_reviews'%}"><i class="bi bi-star-fill"></i> Driver Reviews</a></li>
+                            
+                            
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="servicesFuelingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-fuel-pump"></i> Services & Fueling
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="servicesFuelingDropdown">
+                           <li><a class="dropdown-item" href="{% url 'service_create'%}"><i class="bi bi-patch-plus"></i> Create New Service</a></li>
+                            <li><a class="dropdown-item" href="{%url 'service_list'%}"><i class="bi-list-task"></i> All Services</a></li>
+                            <li><a class="dropdown-item" href="{%url 'manage_other_expenses'%}"><i class="bi-files"></i> Other Expenses</a></li>
+                            <li><a class="dropdown-item" href="{%url 'add_fueling'%}"><i class="bi-funnel"></i> New Fueling</a></li>
+                            <li><a class="dropdown-item" href="{%url 'fuel_report_list'%}"><i class="bi bi-list-ul"></i> Fueling Report</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_tyre'%}"><i class="bi-arrow-repeat"></i> Tyre Replacement</a></li>
+                            
+                            
+                        </ul>
+                    </li>
+                    
+                    </li>
+                    <li class="nav-item dropdown">
+                          <button class="dashboard-btn"> <i class="bi bi-tools"></i> Reports</button>
+
+                        <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
+                            <li><a class="dropdown-item" href="{% url 'typewise'%}"><i class="bi-car-front-fill"></i> Servive Type Wise</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manageitems'%}"><i class="bi bi-box-seam-fill"></i> Parts Wise</a></li>
+                            <li><a class="dropdown-item" href="{% url 'purchase_list' %}"><i class="bi bi-cart-check-fill"></i> Purchase List</a></li>
+                            <li><a class="dropdown-item" href="{%url 'fuel_report_list'%}"><i class="bi-pie-chart"></i> Fueling Report</a></li>
+                             
+                               <li class="dropdown-submenu">
+                                  <a class="dropdownn-item dropdown-toggle" href="#">
+                                    <i class="bi bi-bell"></i> Vehicle Reminders
+                                  </a>
+                                  <ul class="dropdownn-menu">
+                                    <li><a class="dropdownn-item" href="{% url 'manage_insurances' %}">Vehicle Insurance</a></li>
+                                    <li><a class="dropdownn-item" href="{% url 'manage_registrations' %}">Vehicle Registration</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_roadtax'%}">Road Tax</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_permit'%}">Vehicle Permit</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_puc'%}">Vehicle PUC</a></li>
+                                    
+                                    <li><a class="dropdownn-item" href="{%url 'manage_fitness'%}">Fitness Certificate</a></li>
+                                    
+                                    
+                                  </ul>
+                                </li>
+                            <li><a class="dropdown-item" href="#"><i class="bi-person-fill"></i>Drive Reminders</a></li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+                <button class="logout-btn">Logout</button>
+            </div>
+        </div>
+    </nav>
+  <div class="container-box">
+    <div class="header-section">
+      <h3 class="page-title">Purchase Items List</h3>
+      <a href="{% url 'create_purchase' %}" class="btn-add">
+        <i class="bi bi-plus-circle"></i> Add New Purchase
+      </a>
+    </div>
+
+    <div class="mb-3">
+      <input type="text" id="searchInput" class="form-control search-bar" placeholder="Search purchases...">
+    </div>
+
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Manager</th>
+            <th>Item Type</th>
+            <th>Vendor</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="purchaseTableBody">
+          {% if purchases %}
+            {% for purchase in purchases %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ purchase.purchase_title }}</td>
+              <td>{{ purchase.purchase_manager }}</td>
+              <td>{{ purchase.item_type }}</td>
+              <td>{{ purchase.vendor }}</td>
+              <td>{{ purchase.quantity }}</td>
+              <td>
+                {% if purchase.purchase_status == "Completed" %}
+                  <span class="badge bg-success">{{ purchase.purchase_status }}</span>
+                {% elif purchase.purchase_status == "Pending" %}
+                  <span class="badge bg-warning text-dark">{{ purchase.purchase_status }}</span>
+                {% elif purchase.purchase_status == "In Progress" %}
+                  <span class="badge bg-info text-dark">{{ purchase.purchase_status }}</span>
+                {% else %}
+                  <span class="badge bg-secondary">{{ purchase.purchase_status }}</span>
+                {% endif %}
+              </td>
+              <td>
+                <!-- Edit Button -->
+                <button class="btn-action text-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ purchase.pk }}">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+
+                <!-- Delete Button (POST Form) -->
+                <form action="{% url 'delete_purchase' purchase.pk %}" method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn-action btn-delete" onclick="return confirm('Are you sure you want to delete this?')">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+              </td>
+            </tr>
+
+            <!-- Bootstrap Edit Modal -->
+            <div class="modal fade" id="editModal{{ purchase.pk }}" tabindex="-1" aria-labelledby="editModalLabel{{ purchase.pk }}" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <form method="post" action="{% url 'edit_purchase' purchase.pk %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="editModalLabel{{ purchase.pk }}">Edit Purchase</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        <label class="form-label">Title</label>
+                        <input type="text" name="purchase_title" value="{{ purchase.purchase_title }}" class="form-control" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Manager</label>
+                        <input type="text" name="purchase_manager" value="{{ purchase.purchase_manager }}" class="form-control">
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Item Type</label>
+                        <input type="text" name="item_type" value="{{ purchase.item_type }}" class="form-control">
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Vendor</label>
+                        <input type="text" name="vendor" value="{{ purchase.vendor }}" class="form-control">
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" name="quantity" value="{{ purchase.quantity }}" class="form-control">
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="purchase_status" class="form-select">
+                          <option value="Pending" {% if purchase.purchase_status == "Pending" %}selected{% endif %}>Pending</option>
+                          <option value="In Progress" {% if purchase.purchase_status == "In Progress" %}selected{% endif %}>In Progress</option>
+                          <option value="Completed" {% if purchase.purchase_status == "Completed" %}selected{% endif %}>Completed</option>
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control">{{ purchase.description }}</textarea>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="8" class="text-center text-muted">No purchase records found.</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+      let filter = this.value.toLowerCase();
+      let rows = document.querySelectorAll("#purchaseTableBody tr");
+      rows.forEach(row => {
+        let text = row.textContent.toLowerCase();
+        row.style.display = text.includes(filter) ? "" : "none";
+      });
+    });
+  </script>
+</body>
+</html>

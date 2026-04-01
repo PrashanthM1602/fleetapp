@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Fuel Report</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+
+     /* Navbar Styling */
+
+        body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;                   
+    background: #f4f6f9; /* Light grey-blue background for a professional touch */
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    background-attachment: fixed;
+    color: #333;
+    
+}
+
+/* Optional: subtle gradient or just a solid background */
+body::before,
+body::after {
+    display: none; /* Removing abstract blurred blobs for a cleaner layout */
+}
+
+/* Containers and cards */
+.container, .card, .navbar, .btn, .form-select, .card-body {
+    position: relative;
+    z-index: 1;
+}
+
+        .navbar {
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-right: 50px;
+        }
+        .navbar-brand span.v {
+            color: #ff9800;
+        }
+        .navbar-brand span.track360 {
+            color: rgba(229, 150, 65, 0.935);
+        }
+
+        /* Dashboard Button */
+        .dashboard-btn {
+            background: linear-gradient(45deg, #4CAF50, #2E8B57);
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(46, 139, 87, 0.7);
+        }
+        .dashboard-btn:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        }
+        /* Space between nav-items */
+.navbar-nav .nav-item {
+    margin-right: 15px; /* adjust spacing between items */
+    margin-top: 10px;
+}
+
+/* Padding inside nav links */
+.navbar-nav .nav-link {
+    padding: 8px 12px;
+    border-radius: 6px; /* keeps hover effect nice & rounded */
+}
+
+
+        .navbar-nav .nav-item .nav-link:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            border-radius: 10px;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        } 
+        /* Show dropdown on hover */
+  .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    
+    margin-top: 0; /* Remove Bootstrap's small offset */
+    animation: fadeInDown 0.3s ease-in-out;
+    border-radius: 15px;
+    z-index: 1001;
+    position: absolute;
+    
+    
+  }
+
+
+
+
+
+
+
+/* Optional: Add smooth animation */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+        /* Stylish Logout Button */
+        .logout-btn {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 65, 108, 0.7);
+        }
+        .logout-btn:hover {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 65, 108, 1);
+        }
+    body {
+      background-color: #f8f9fb;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container-box {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      padding: 25px;
+      margin: 40px auto;
+      width: 95%;
+    }
+
+    .page-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 10px;
+    }
+
+    .table thead {
+      background-color: #f1f3f5;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .table td, .table th {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .text-green {
+      color: #15803d;
+      font-weight: 600;
+    }
+
+    
+.dropdown-submenu {
+  position: relative;
+}
+
+/* Hide submenu by default */
+.dropdown-submenu .dropdownn-menu {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%; /* Makes it pop out to the right */
+  margin-top: -5px;
+  min-width: 220px;
+  background-color: #fff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px);
+  transition: all 0.25s ease-in-out;
+  z-index: 1000;
+}
+
+/* Show submenu on hover */
+.dropdown-submenu:hover > .dropdownn-menu {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+/* Dropdown item design */
+.dropdown-submenu .dropdownn-item {
+  display: block;
+  padding: 8px 18px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect */
+.dropdown-submenu .dropdownn-item:hover {
+  background-color: #f8f9fa;
+  color: #0d6efd;
+}
+
+/* Remove any default bullet or circle symbol */
+.dropdown-submenu .dropdownn-item::before {
+  content: "";
+}
+
+/* Right arrow for submenu indicator */
+.dropdown-submenu > a::after {
+  {% comment %} content: "›"; {% endcomment %}
+  float: right;
+  font-size: 0.9rem;
+  opacity: 0.6;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.dropdown-submenu:hover > a::after {
+  transform: translateX(2px);
+  opacity: 1;
+}
+
+.dropdown-menu,
+.dropdownn-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+  </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <span class="v">V</span><span class="track360">Track360</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <button class="dashboard-btn"><i class="bi bi-speedometer2"></i> Dashboard</button>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="mastersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="bi bi-tools"></i> Masters
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="mastersDropdown">
+                <div id="main-content">
+                            <li><a class="dropdown-item" href="{% url 'manageparts' %}"><i class="bi bi-wrench-adjustable-circle"></i> Garage masters</a></li>
+                            <li><a class="dropdown-item" href="{% url 'create' %}"><i class="bi bi-truck-front-fill"></i> Vehicle Ownership</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inspection'%}"><i class="bi bi-compass"></i> Inspection types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'expense'%}"><i class="bi bi-graph-down-arrow"></i> Expense Types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'fueltype' %}"><i class="bi bi-fuel-pump-fill"></i> Fuel Types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'service' %}"><i class="bi bi-person-workspace"></i> Service Types</a></li>
+                            
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="garageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-tools"></i> Garage
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="garageDropdown">
+                            <li><a class="dropdown-item" href="{% url 'inspection_create'%}"><i class="bi bi-plus-square-fill"></i> Create new Incpection</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inspection_list' %}"><i class="bi bi-list"></i> Incpection Requests </a></li>
+                            <li><a class="dropdown-item" href="{% url 'completed_inspection_list'%}"><i class="bi bi-grid-3x3-gap-fill"></i> Completed Inspections </a></li>
+                            <li><a class="dropdown-item" href="{% url  'newquat'%}"><i class="bi bi-plus-circle-fill"></i> Create New Quotation </a></li>
+                            <li><a class="dropdown-item" href="{% url  'quatlist'%}"><i class="bi bi-file-text me-2"></i> All Quotation </a></li>
+                            <li><a class="dropdown-item" href="{% url  'approved_quotations'%}"><i class="bi bi-check-circle"></i> Approved Quotations </a></li>
+                           
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="vehiclesDriversDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-truck"></i> Vehicles & Drivers
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="vehiclesDriversDropdown">
+                            <li><a class="dropdown-item" href="{% url 'add_vehicle'%}"><i class="bi bi-plus-square-fill"></i> Add New Vehicle</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_vehicles'%}"><i class="bi bi-truck"></i> Vehicles</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_drivers'%}"><i class="bi bi-person"></i> Drivers</a></li>
+                            <li><a class="dropdown-item" href="{% url 'driver_reviews'%}"><i class="bi bi-star-fill"></i> Driver Reviews</a></li>
+                            
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="servicesFuelingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-fuel-pump"></i> Services & Fueling
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="servicesFuelingDropdown">
+                            <li><a class="dropdown-item" href="{% url 'service_create'%}"><i class="bi bi-patch-plus"></i> Create New Service</a></li>
+                            <li><a class="dropdown-item" href="{%url 'service_list'%}"><i class="bi-list-task"></i> All Services</a></li>
+                            <li><a class="dropdown-item" href="{%url 'manage_other_expenses'%}"><i class="bi-files"></i> Other Expenses</a></li>
+                            <li><a class="dropdown-item" href="{%url 'add_fueling'%}"><i class="bi-funnel"></i> New Fueling</a></li>
+                            <li><a class="dropdown-item" href="{%url 'fuel_report_list'%}"><i class="bi bi-list-ul"></i> Fueling Report</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_tyre'%}"><i class="bi-arrow-repeat"></i> Tyre Replacement</a></li>
+                            
+                        </ul>
+                    </li>
+                    
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-file-earmark-bar-graph"></i> Reports
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
+                            <li><a class="dropdown-item" href="{% url 'typewise'%}"><i class="bi-car-front-fill"></i> Servive Type Wise</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manageitems'%}"><i class="bi bi-box-seam-fill"></i> Parts Wise</a></li>
+                            <li><a class="dropdown-item" href="{% url 'purchase_list' %}"><i class="bi bi-cart-check-fill"></i> Purchase List</a></li>
+                            <li><a class="dropdown-item" href="{%url 'fuel_report_list'%}"><i class="bi-pie-chart"></i> Fueling Report</a></li>
+                             
+                               <li class="dropdown-submenu">
+                                  <a class="dropdownn-item dropdown-toggle" href="#">
+                                    <i class="bi bi-bell"></i> Vehicle Reminders
+                                  </a>
+                                  <ul class="dropdownn-menu">
+                                    <li><a class="dropdownn-item" href="{% url 'manage_insurances' %}">Vehicle Insurance</a></li>
+                                    <li><a class="dropdownn-item" href="{% url 'manage_registrations' %}">Vehicle Registration</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_roadtax'%}">Road Tax</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_permit'%}">Vehicle Permit</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_puc'%}">Vehicle PUC</a></li>
+                                    
+                                    <li><a class="dropdownn-item" href="{%url 'manage_fitness'%}">Fitness Certificate</a></li>
+                                    
+                                    
+                                  </ul>
+                                </li>
+                            <li><a class="dropdown-item" href="#"><i class="bi-person-fill"></i>Drive Reminders</a></li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+                <button class="logout-btn">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+  <div class="container-box">
+    <div class="page-title">Manage Fuel Report</div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle">
+        <thead>
+          <tr>
+            <th>S.No.</th>
+            <th>Vehicle</th>
+            <th>Plate No</th>
+            <th>Total Liters</th>
+            <th>Total Kilometers</th>
+            <th>Total Cost</th>
+            <th>Avg. KM Per Liter</th>
+            <th>Cost per KM</th>
+            <th>Updated Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Baleno-(Car)</td>
+            <td>RJ05KT01236</td>
+            <td>6</td>
+            <td>45677</td>
+            <td class="text-green">720</td>
+            <td>22.83</td>
+            <td>0.02</td>
+            <td>25/07/2025</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>T-Camry-(Car)</td>
+            <td>DE41K9632</td>
+            <td>45</td>
+            <td>500</td>
+            <td class="text-green">4185</td>
+            <td>11.11</td>
+            <td>8.37</td>
+            <td>20/05/2025</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Swift-(Car)</td>
+            <td>MH12AB4567</td>
+            <td>22</td>
+            <td>850</td>
+            <td class="text-green">2329.14</td>
+            <td>38.64</td>
+            <td>2.74</td>
+            <td>01/03/2025</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Innova-(Car)</td>
+            <td>KA19ME2020</td>
+            <td>147.76</td>
+            <td>1600</td>
+            <td class="text-green">6251.92</td>
+            <td>10.83</td>
+            <td>3.91</td>
+            <td>13/03/2025</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Fortuner-(Car)</td>
+            <td>DL03PK9876</td>
+            <td>78</td>
+            <td>2150</td>
+            <td class="text-green">8210.50</td>
+            <td>27.56</td>
+            <td>3.81</td>
+            <td>05/04/2025</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>EcoSport-(SUV)</td>
+            <td>TN09LX5521</td>
+            <td>64.5</td>
+            <td>1745</td>
+            <td class="text-green">5198.35</td>
+            <td>27.05</td>
+            <td>2.97</td>
+            <td>19/06/2025</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Venue-(SUV)</td>
+            <td>GJ01RT2345</td>
+            <td>90.2</td>
+            <td>2120</td>
+            <td class="text-green">6782.66</td>
+            <td>23.51</td>
+            <td>3.19</td>
+            <td>10/08/2025</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

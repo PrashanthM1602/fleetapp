@@ -1,0 +1,144 @@
+{% load static %}
+
+<style>
+/* ===== Modal Base ===== */
+.modal-content {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: #fff;
+  color: #1f2937;
+}
+
+/* ===== Header ===== */
+.doc-header {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 18px 24px;
+}
+.doc-header .modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ===== Meta Info Grid ===== */
+.doc-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  padding: 16px 24px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+.doc-meta .meta-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.doc-meta .meta-value {
+  font-size: 0.95rem;
+  color: #111827;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* ===== Body ===== */
+.doc-body {
+  padding: 20px 24px;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+.section-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #2563eb;
+  font-size: 0.95rem;
+}
+
+/* ===== Description Box ===== */
+.description {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  padding: 14px;
+  border-radius: 6px;
+  max-height: 350px;
+  overflow-y: auto;
+}
+.description img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+  margin: 8px 0;
+}
+
+/* ===== Footer ===== */
+.doc-footer {
+  padding: 14px 24px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  background: #f9fafb;
+}
+
+/* ===== Responsive Width ===== */
+@media (min-width: 992px) {
+  .modal-dialog.modal-lg {
+    max-width: 880px;
+  }
+}
+</style>
+
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+
+    <!-- Header -->
+    <div class="doc-header">
+      <h5 class="modal-title">{{ inspection.title }}</h5>
+    </div>
+
+    <!-- Meta Information -->
+    <div class="doc-meta">
+      <div>
+        <div class="meta-label">Inspection Type</div>
+        <div class="meta-value">{{ inspection.inspection_type }}</div>
+      </div>
+      <div>
+        <div class="meta-label">Manager</div>
+        <div class="meta-value">{{ inspection.manager }}</div>
+      </div>
+      <div>
+        <div class="meta-label">Status</div>
+        <div class="meta-value">{{ inspection.status }}</div>
+      </div>
+      <div>
+        <div class="meta-label">Vehicle</div>
+        <div class="meta-value">{{ inspection.vehicle }}</div>
+      </div>
+      <div>
+        <div class="meta-label">Created At</div>
+        <div class="meta-value">{{ inspection.created_at|date:"Y-m-d H:i" }}</div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="doc-body">
+      <div class="section-title">Description</div>
+      <div class="description">
+        {{ inspection.description|safe }}
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="doc-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    </div>
+
+  </div>
+</div>

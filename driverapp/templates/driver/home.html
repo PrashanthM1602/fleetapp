@@ -1,0 +1,498 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% comment %} {% load pwa %}
+{% progressive_web_app_meta %} {% endcomment %}
+<meta charset="UTF-8">
+<script>
+(function () {
+  const settings = JSON.parse(localStorage.getItem("settings"));
+  if (settings?.dark) {
+    document.documentElement.classList.add("dark");
+  }
+})();
+</script>
+<title>Driver Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+
+:root {
+    --bg: #f2f2f2;
+    --card: #ffffff;
+    --text: #000000;
+}
+
+.dark {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #ffffff;
+}
+body {
+    background: var(--card);
+    color: var(--text);
+}
+
+/* TOP BAR */
+.top-bar {
+    background: #495f80;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.menu-icon { font-size: 22px; cursor: pointer; }
+
+/* DUTY SWITCH */
+.duty-switch {
+    background: var(--card);
+    color: var(--text);
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+}
+.switch { position: relative; width: 50px; height: 25px; margin-left: 10px; }
+.switch input { display: none; }
+.slider {
+    position: absolute;
+    inset: 0;
+    background: red;
+    border-radius: 20px;
+    transition: .3s;
+}
+.slider:before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: .3s;
+}
+.switch input:checked + .slider { background: #4cd964; }
+.switch input:checked + .slider:before { transform: translateX(24px); }
+
+/* MAP */
+#map { height: calc(100vh - 60px); }
+
+/* STATUS */
+.status-text {
+    position: absolute;
+    top: 75px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--card);
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    box-shadow: 0 3px 8px rgba(0,0,0,.2);
+    z-index: 500;
+}
+
+/* SIDE MENU */
+.side-menu {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    width: 260px;
+    height: 100%;
+    background: var(--card);
+    box-shadow: 4px 0 12px rgba(0,0,0,.3);
+    transition: .3s;
+    z-index: 3000;
+}
+.side-menu.active { left: 0; }
+.menu-header {
+    background: #1976ff;
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+.profile-pic {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+.menu-list li {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+.menu-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 15px;
+    border-top: 1px solid #eee;
+}
+.logout-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+}
+
+/* OVERLAY */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    display: none;
+    z-index: 2500;
+}
+.overlay.active { display: block; }
+
+/* TRIP POPUP */
+.trip-popup {
+    position: fixed;
+    bottom: -400px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    background: var(--card);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.3);
+    transition: .4s;
+    z-index: 2000;
+}
+.trip-popup.active { bottom: 20px; }
+.trip-buttons { display: flex; gap: 10px; }
+.trip-buttons button {
+    flex: 1;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+.accept-btn { background: gold; }
+.decline-btn { background: #ddd; }
+
+/* LOADING */
+#loadingOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    display: none;
+    z-index: 4000;
+    align-items: center;
+    justify-content: center;
+}
+.loading-box {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOADING -->
+<div id="loadingOverlay">
+    <div class="loading-box">
+        <b>Finding nearby orders…</b>
+    </div>
+</div>
+<div id="driverData" data-id="{{ driver.id }}"></div>
+
+
+<!-- SIDE MENU -->
+<div class="side-menu" id="sideMenu">
+    <div class="menu-header">
+        <img id="profilePic" class="profile-pic"
+             src="{% if driver.driver_profile_image %}{{ driver.driver_profile_image.url }}{% else %}https://cdn-icons-png.flaticon.com/512/149/149071.png{% endif %}">
+
+        <div>
+           <b>{{ driver.driver_full_name }}</b><br>
+           <span>{{ driver.driver_code }}</span><br>
+
+           
+            ⭐ <span>4.9</span>
+        </div>  
+    </div>
+    <ul class="menu-list">
+        <li onclick="goPage('{% url 'booking' %}')">My Bookings</li>
+        <li onclick="goPage('{% url 'package' %}')">Travel Packages</li>
+        <li onclick="goPage('{% url 'emergency' %}')">Emergency Contacts</li>
+        <li onclick="goPage('{% url 'settings' %}')">Settings</li>
+        <li onclick="goPage('{% url 'help' %}')">Help</li>
+    </ul>
+
+    <div class="menu-footer">
+    <a href="{% url 'driver_logout' %}">
+        <button class="logout-btn">Sign out</button>
+    </a>
+</div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+    <span class="menu-icon" id="menuBtn">☰</span>
+
+    <div class="duty-switch">
+        <span id="dutyLabel">OFF DUTY</span>
+        <label class="switch">
+            <input type="checkbox" id="dutyToggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <span></span>
+</div>
+
+<div id="statusText" class="status-text">
+    You are offline. Turn ON duty.
+</div>
+
+<div id="map"></div>
+
+<!-- TRIP POPUP -->
+<div id="tripPopup" class="trip-popup">
+    <b id="tripDate"></b>
+    <p id="pickupText"></p>
+    <p id="dropText"></p>
+    <p id="fareText"></p>
+
+    <div class="trip-buttons">
+        <button class="decline-btn" onclick="declineTrip()">Decline</button>
+        <button class="accept-btn" onclick="acceptTrip()">Accept</button>
+    </div>
+</div>
+
+<audio id="orderSound" loop>
+    <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg">
+</audio>
+
+<div id="jwtToken" data-token="{{ jwt_token }}"></div>
+<script>
+/* ================= DATA ================= */
+const RATE_PER_KM = 15;
+
+const tripOptions = [
+ {p:"Gottigere Warehouse",d:"Silk Board Hub",pl:[12.8826,77.5963],dl:[12.9177,77.6227]},
+ {p:"Yelahanka Depot",d:"Majestic Terminal",pl:[13.1007,77.5963],dl:[12.9770,77.5710]},
+ {p:"Whitefield DC",d:"KR Puram Store",pl:[12.9698,77.7499],dl:[13.0076,77.6959]},
+ {p:"Electronic City",d:"BTM Layout",pl:[12.8452,77.6602],dl:[12.9166,77.6101]},
+ {p:"Airport Cargo Hub",d:"Manyata Tech Park",pl:[13.1986,77.7066],dl:[13.0464,77.6213]}
+];
+
+/* ================= MENU ================= */
+menuBtn.onclick = () => {
+    sideMenu.classList.add("active");
+    overlay.classList.add("active");
+};
+overlay.onclick = () => {
+    sideMenu.classList.remove("active");
+    overlay.classList.remove("active");
+};
+function goPage(p){ window.location.href = p; }
+
+/* ================= MAP ================= */
+let map, driverMarker;
+
+function initMap(lat, lng) {
+    map = L.map("map").setView([lat, lng], 13);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+    driverMarker = L.marker([lat, lng]).addTo(map);
+}
+
+const driverId = document.getElementById("driverData").dataset.id;
+
+let lastSentTime = 0;
+
+navigator.geolocation.watchPosition(
+    pos => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+
+        // Map update
+        if (!map) initMap(lat, lng);
+        else driverMarker.setLatLng([lat, lng]);
+
+        // ⏱️ Send every 10 sec (for ON DUTY)
+        if (Date.now() - lastSentTime < 10000 && dutyToggle.checked) return;
+
+        lastSentTime = Date.now();
+
+        sendLocation(lat, lng);
+    },
+    err => {
+        console.error("GPS error:", err);
+        alert("Enable location access");
+    },
+    { enableHighAccuracy: true }
+);
+
+// 🔥 COMMON FUNCTION
+function sendLocation(lat, lng) {
+    fetch("/api/update-location/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            driver_id: driverId,
+            latitude: lat,
+            longitude: lng,
+            status: dutyToggle.checked ? "ON_DUTY" : "OFF_DUTY"
+        })
+    })
+    .then(res => res.json())
+    .then(data => console.log("✅ Location sent:", data))
+    .catch(err => console.error("❌ Error:", err));
+}
+
+// 🔥 IMPORTANT: Send immediately when toggle changes
+dutyToggle.addEventListener("change", () => {
+    navigator.geolocation.getCurrentPosition(pos => {
+        sendLocation(pos.coords.latitude, pos.coords.longitude);
+    });
+});
+
+
+
+/* ================= HELPERS ================= */
+function km(a,b){
+    const R=6371;
+    const dLat=(b[0]-a[0])*Math.PI/180;
+    const dLng=(b[1]-a[1])*Math.PI/180;
+    const la=a[0]*Math.PI/180, lb=b[0]*Math.PI/180;
+    const x=Math.sin(dLat/2)**2+Math.sin(dLng/2)**2*Math.cos(la)*Math.cos(lb);
+    return (R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))).toFixed(2);
+}
+function showLoading(){ loadingOverlay.style.display="flex"; }
+function hideLoading(){ loadingOverlay.style.display="none"; }
+function playSound(){ orderSound.play(); }
+function stopSound(){ orderSound.pause(); orderSound.currentTime=0; }
+
+/* ================= DUTY ================= */
+dutyToggle.onchange = () => {
+    if(dutyToggle.checked){
+        dutyLabel.innerText="ON DUTY";
+        statusText.innerText="Searching for orders…";
+        showLoading();
+
+        setTimeout(()=>{
+            hideLoading();
+            statusText.innerText="New order found!";
+            playSound();
+            showTrip();
+        },3000);
+    } else {
+        stopSound();
+        closeTrip();
+        statusText.innerText="You are offline. Turn ON duty.";
+    }
+};
+
+/* ================= TRIP ================= */
+let trip;
+
+function showTrip(){
+    trip = tripOptions[Math.floor(Math.random()*tripOptions.length)];
+    const dist = km(trip.pl,trip.dl);
+    const fare = Math.round(dist * RATE_PER_KM);
+
+    pickupText.innerHTML="<b>Pickup:</b> "+trip.p;
+    dropText.innerHTML="<b>Drop:</b> "+trip.d;
+    fareText.innerHTML=`<b>Distance:</b> ${dist} km<br><b>Fare:</b> ₹${fare}`;
+
+    tripPopup.classList.add("active");
+    drawRoute();
+}
+
+function drawRoute(){
+    if(routeLine) map.removeLayer(routeLine);
+    routeLine = L.polyline([trip.pl,trip.dl],{color:"blue",weight:4}).addTo(map);
+    map.fitBounds(routeLine.getBounds());
+}
+
+function acceptTrip() {
+    stopSound();
+
+    const orderId = "ORD" + Math.floor(Math.random() * 100000);
+
+    localStorage.setItem("trip_status", "ACCEPTED");
+    localStorage.setItem("order_id", orderId);
+
+    // ✅ THIS IS THE KEY LINE YOU WERE MISSING
+    localStorage.setItem("active_trip", JSON.stringify({
+        pickup: trip.p,
+        drop: trip.d,
+        pickupCoords: trip.pl,
+        dropCoords: trip.dl
+    }));
+
+    window.location.href = "/driver/accepted/";
+}
+
+
+function declineTrip(){
+    stopSound();
+    closeTrip();
+    dutyToggle.checked=true;
+    dutyToggle.onchange();
+}
+
+function closeTrip(){
+    tripPopup.classList.remove("active");
+}
+
+/* ================= PROFILE ================= */
+{% comment %} async function loadProfile() {
+    const token = document.getElementById("jwtToken").dataset.token;
+
+    console.log("TOKEN:", token);  // 🔍 DEBUG
+
+    try {
+        const res = await fetch("http://127.0.0.1:8000/api/driver-profile/", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        const data = await res.json();
+
+        console.log("API DATA:", data);  // 🔍 DEBUG
+
+        document.getElementById("profileName").innerText = data.name;
+        document.getElementById("profileId").innerText = data.code;
+
+        if (data.image) {
+            document.getElementById("profilePic").src = data.image;
+        }
+
+    } catch (err) {
+        console.error("Profile load failed", err);
+    }
+}
+
+loadProfile(); {% endcomment %}
+
+
+</script>
+
+</body>
+</html>

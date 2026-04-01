@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tyre Repplacement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+   
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+      .table th, .table td {
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .action-btn {
+      background-color: #003cff;
+      color: white;
+      border: none;
+      padding: 4px 10px;
+      font-size: 13px;
+      border-radius: 4px;
+    }
+    .page-title {
+      font-weight: 600;
+      font-size: 20px;
+      padding: 15px 0;
+    }
+    .btn-add {
+      background-color: #003cff;
+      color: white;
+      margin-bottom: 10px;
+    }
+    .img-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+      body {
+      background-color: #f8f9fa;
+    }
+
+    .wizard-nav {
+      display: flex;
+      padding-left: 0;
+      list-style: none;
+      margin-bottom: 0;
+    }
+
+    body::before,
+body::after {
+    display: none; /* Removing abstract blurred blobs for a cleaner layout */
+}
+
+
+
+        .navbar {
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-right: 50px;
+        }
+        .navbar-brand span.v {
+            color: #ff9800;
+        }
+        .navbar-brand span.track360 {
+            color: rgba(229, 150, 65, 0.935);
+        }
+
+        /* Dashboard Button */
+        .dashboard-btn {
+            background: linear-gradient(45deg, #4CAF50, #2E8B57);
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(46, 139, 87, 0.7);
+        }
+        .dashboard-btn:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        }
+        /* Space between nav-items */
+.navbar-nav .nav-item {
+    margin-right: 15px; /* adjust spacing between items */
+    margin-top: 10px;
+}
+
+/* Padding inside nav links */
+.navbar-nav .nav-link {
+    padding: 8px 12px;
+    border-radius: 6px; /* keeps hover effect nice & rounded */
+}
+
+
+        .navbar-nav .nav-item .nav-link:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            border-radius: 10px;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        } 
+        /* Show dropdown on hover */
+  .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    
+    margin-top: 0; /* Remove Bootstrap's small offset */
+    animation: fadeInDown 0.3s ease-in-out;
+    border-radius: 15px;
+    z-index: 1001;
+    position: absolute;
+    
+    
+  }
+
+
+
+
+
+
+
+/* Optional: Add smooth animation */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+        /* Stylish Logout Button */
+        .logout-btn {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 65, 108, 0.7);
+        }
+        .logout-btn:hover {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 65, 108, 1);
+        }
+
+    .card-header h5 {
+      font-weight: 600;
+    }
+
+    .btn-add {
+      font-weight: 500;
+    }
+
+    .filter-icon {
+      font-size: 0.8rem;
+      color: #6c757d;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    .table thead th {
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    .action-icons i {
+      cursor: pointer;
+      margin: 0 5px;
+      color: #0d6efd;
+    }
+
+    .header-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .sub-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .search-input {
+      max-width: 200px;
+    }
+    
+    dropdown-submenu {
+  position: relative;
+}
+
+/* Hide submenu by default */
+.dropdown-submenu .dropdownn-menu {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%; /* Makes it pop out to the right */
+  margin-top: -5px;
+  min-width: 220px;
+  background-color: #fff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px);
+  transition: all 0.25s ease-in-out;
+  z-index: 1000;
+}
+
+/* Show submenu on hover */
+.dropdown-submenu:hover > .dropdownn-menu {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+/* Dropdown item design */
+.dropdown-submenu .dropdownn-item {
+  display: block;
+  padding: 8px 18px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect */
+.dropdown-submenu .dropdownn-item:hover {
+  background-color: #f8f9fa;
+  color: #0d6efd;
+}
+
+/* Remove any default bullet or circle symbol */
+.dropdown-submenu .dropdownn-item::before {
+  content: "";
+}
+
+/* Right arrow for submenu indicator */
+.dropdown-submenu > a::after {
+  {% comment %} content: "›"; {% endcomment %}
+  float: right;
+  font-size: 0.9rem;
+  opacity: 0.6;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.dropdown-submenu:hover > a::after {
+  transform: translateX(2px);
+  opacity: 1;
+}
+
+.dropdown-menu,
+.dropdownn-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+    
+  </style>
+</head>
+<body>
+ <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <span class="v">V</span><span class="track360">Track360</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard' %}">                
+                   <i class="bi bi-speedometer2"></i> Dashboard
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="garageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-tools"></i> Masters
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="mastersDropdown">
+            <div id="main-content">
+                            <li><a class="dropdown-item" href="{% url 'manageparts' %}"><i class="bi bi-wrench-adjustable-circle"></i> Garage masters</a></li>
+                            <li><a class="dropdown-item" href="{% url 'create' %}"><i class="bi bi-truck-front-fill"></i> Vehicle Ownership</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inspection'%}"><i class="bi bi-compass"></i> Inspection types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'expense'%}"><i class="bi bi-graph-down-arrow"></i> Expense Types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'fueltype' %}"><i class="bi bi-fuel-pump-fill"></i> Fuel Types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'service' %}"><i class="bi bi-person-workspace"></i> Service Types</a></li>
+                        
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="vehiclesDriversDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                      <i class="bi bi-tools"></i> Garage</button>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="garageDropdown">
+                        <li><a class="dropdown-item" href="{% url 'inspection_create'%}"><i class="bi bi-plus-square-fill"></i> Create new Incpection</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inspection_list' %}"><i class="bi bi-list"></i> Incpection Requests </a></li>
+                            <li><a class="dropdown-item" href="{% url 'completed_inspection_list'%}"><i class="bi bi-grid-3x3-gap-fill"></i> Completed Inspections </a></li>
+                            <li><a class="dropdown-item" href="{% url  'newquat'%}"><i class="bi bi-plus-circle-fill"></i> Create New Quotation </a></li>
+                            <li><a class="dropdown-item" href="{% url  'quatlist'%}"><i class="bi bi-file-text me-2"></i> All Quotation </a></li>
+                            <li><a class="dropdown-item" href="{% url  'approved_quotations'%}"><i class="bi bi-check-circle"></i> Approved Quotations </a></li>
+                       
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="vehiclesDriversDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-truck"></i> Vehicles & Drivers
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="vehiclesDriversDropdown">
+                        <li><a class="dropdown-item" href="{% url 'add_vehicle'%}"><i class="bi bi-plus-square-fill"></i> Add New Vehicle</a></li>
+                        <li><a class="dropdown-item" href="{% url 'manage_vehicles'%}"><i class="bi bi-truck"></i> Vehicles</a></li>
+                        <li><a class="dropdown-item" href="{% url 'manage_drivers'%}"><i class="bi bi-person"></i> Drivers</a></li>
+                        <li><a class="dropdown-item" href="{% url 'driver_reviews'%}"><i class="bi bi-star-fill"></i> Driver Reviews</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item dropdown">
+                       <button class="dashboard-btn"> <i class="bi bi-fuel-pump"></i> Services & Fueling</button>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="servicesFuelingDropdown">
+                         <li><a class="dropdown-item" href="{% url 'service_create'%}"><i class="bi bi-patch-plus"></i> Create New Service</a></li>
+                        <li><a class="dropdown-item" href="{%url 'service_list'%}"><i class="bi-list-task"></i> All Services</a></li>
+                            <li><a class="dropdown-item" href="{%url 'manage_other_expenses'%}"><i class="bi-files"></i> Other Expenses</a></li>
+                            <li><a class="dropdown-item" href="{%url 'add_fueling'%}"><i class="bi-funnel"></i> New Fueling</a></li>
+                            <li><a class="dropdown-item" href="{%url 'fuel_report_list'%}"><i class="bi bi-list-ul"></i> Fueling Report</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_tyre'%}"><i class="bi-arrow-repeat"></i> Tyre Replacement</a></li>
+                        
+                    </ul>
+                </li>
+                
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-file-earmark-bar-graph"></i> Reports
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
+                            <li><a class="dropdown-item" href="{% url 'typewise'%}"><i class="bi-car-front-fill"></i> Servive Type Wise</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manageitems'%}"><i class="bi bi-box-seam-fill"></i> Parts Wise</a></li>
+                            <li><a class="dropdown-item" href="{% url 'purchase_list' %}"><i class="bi bi-cart-check-fill"></i> Purchase List</a></li>
+                            <li><a class="dropdown-item" href="{%url 'fuel_report_list'%}"><i class="bi-pie-chart"></i> Fueling Report</a></li>
+                             
+                               <li class="dropdown-submenu">
+                                  <a class="dropdownn-item dropdown-toggle" href="#">
+                                    <i class="bi bi-bell"></i> Vehicle Reminders
+                                  </a>
+                                  <ul class="dropdownn-menu">
+                                    <li><a class="dropdownn-item" href="{% url 'manage_insurances' %}">Vehicle Insurance</a></li>
+                                    <li><a class="dropdownn-item" href="{% url 'manage_registrations' %}">Vehicle Registration</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_roadtax'%}">Road Tax</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_permit'%}">Vehicle Permit</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_puc'%}">Vehicle PUC</a></li>
+                                    
+                                    <li><a class="dropdownn-item" href="{%url 'manage_fitness'%}">Fitness Certificate</a></li>
+                                    
+                                    
+                                  </ul>
+                                </li>
+                            <li><a class="dropdown-item" href="#"><i class="bi-person-fill"></i>Drive Reminders</a></li>
+                            
+                        </ul>
+                </li>
+            </ul>
+            <button class="logout-btn">Logout</button>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid mt-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="page-title">Manage Tyre Replacements</div>
+    <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#addTyreModal">
+      <i class="bi bi-plus-circle"></i> Add Tyre
+    </button>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body table-responsive">
+      <input type="text" class="form-control mb-2" placeholder="Search...">
+      <table class="table table-bordered text-center align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>S.No.</th>
+            <th>Date</th>
+            <th>Vehicle</th>
+            <th>Brand Name</th>
+            <th>Tyre Size</th>
+            <th>Tyre Number</th>
+            <th>Type</th>
+            <th>Replace Reason</th>
+            <th>Odometer</th>
+            <th>Driver</th>
+            <th>Description</th>
+            <th>Bill No</th>
+            <th>Upload Bill</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tyre in tyre_replacements %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ tyre.tyre_replacement_date|date:"Y-m-d" }}</td>
+            <td>{{ tyre.tyre_vehicle_name }}</td>
+            <td>{{ tyre.tyre_brand_name }}</td>
+            <td>{{ tyre.tyre_size_label }}</td>
+            <td>{{ tyre.tyre_unique_number }}</td>
+            <td>{{ tyre.tyre_type_category }}</td>
+            <td>{{ tyre.tyre_replace_reason_text }}</td>
+            <td>{{ tyre.tyre_odometer_reading_value }}</td>
+            <td>{{ tyre.tyre_driver_name }}</td>
+            <td>{{ tyre.tyre_description_details }}</td>
+            <td>{{ tyre.tyre_bill_number }}</td>
+            <td>
+              {% if tyre.tyre_bill_document_file %}
+                <a href="{{ tyre.tyre_bill_document_file.url }}" target="_blank">View</a>
+              {% else %}
+                N/A
+              {% endif %}
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary action-btn" data-bs-toggle="modal" data-bs-target="#editTyreModal{{ tyre.tyre_replacement_id }}">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-danger action-btn" data-bs-toggle="modal" data-bs-target="#deleteTyreModal{{ tyre.tyre_replacement_id }}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+
+          <!-- Edit Modal -->
+          <div class="modal fade" id="editTyreModal{{ tyre.tyre_replacement_id }}" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <form method="POST" action="{% url 'edit_tyre' tyre.tyre_replacement_id %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="modal-header">
+                    <h5 class="modal-title">Edit Tyre Replacement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row g-3">
+                      <div class="col-md-4"><input type="date" name="tyre_replacement_date" class="form-control" value="{{ tyre.tyre_replacement_date|date:'Y-m-d' }}"></div>
+                      <div class="col-md-4"><input type="text" name="tyre_vehicle_name" class="form-control" value="{{ tyre.tyre_vehicle_name }}"></div>
+                      <div class="col-md-4"><input type="text" name="tyre_brand_name" class="form-control" value="{{ tyre.tyre_brand_name }}"></div>
+                      <div class="col-md-4"><input type="text" name="tyre_size_label" class="form-control" value="{{ tyre.tyre_size_label }}"></div>
+                      <div class="col-md-4"><input type="text" name="tyre_unique_number" class="form-control" value="{{ tyre.tyre_unique_number }}"></div>
+                      <div class="col-md-4"><input type="text" name="tyre_type_category" class="form-control" value="{{ tyre.tyre_type_category }}"></div>
+                      <div class="col-md-4"><input type="text" name="tyre_replace_reason_text" class="form-control" value="{{ tyre.tyre_replace_reason_text }}"></div>
+                      <div class="col-md-4"><input type="number" name="tyre_odometer_reading_value" class="form-control" value="{{ tyre.tyre_odometer_reading_value }}"></div>
+                      <div class="col-md-4"><input type="text" name="tyre_driver_name" class="form-control" value="{{ tyre.tyre_driver_name }}"></div>
+                      <div class="col-md-12"><textarea name="tyre_description_details" class="form-control">{{ tyre.tyre_description_details }}</textarea></div>
+                      <div class="col-md-6"><input type="text" name="tyre_bill_number" class="form-control" value="{{ tyre.tyre_bill_number }}"></div>
+                      <div class="col-md-6"><input type="file" name="tyre_bill_document_file" class="form-control"></div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Delete Modal -->
+          <div class="modal fade" id="deleteTyreModal{{ tyre.tyre_replacement_id }}" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <form method="POST" action="{% url 'delete_tyre' tyre.tyre_replacement_id %}">
+                  {% csrf_token %}
+                  <div class="modal-header">
+                    <h5 class="modal-title">Delete Tyre Replacement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Are you sure you want to delete this tyre replacement record?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+          {% if tyre_replacements|length == 0 %}
+          <tr><td colspan="14" class="text-center">No tyre replacements found.</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Add Tyre Modal -->
+<div class="modal fade" id="addTyreModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form method="POST" action="{% url 'add_tyre' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title">Add Tyre Replacement</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-4"><input type="date" name="tyre_replacement_date" class="form-control"></div>
+            <div class="col-md-4"><input type="text" name="tyre_vehicle_name" class="form-control" placeholder="Vehicle Name"></div>
+            <div class="col-md-4"><input type="text" name="tyre_brand_name" class="form-control" placeholder="Brand Name"></div>
+            <div class="col-md-4"><input type="text" name="tyre_size_label" class="form-control" placeholder="Tyre Size"></div>
+            <div class="col-md-4"><input type="text" name="tyre_unique_number" class="form-control" placeholder="Tyre Number"></div>
+            <div class="col-md-4"><input type="text" name="tyre_type_category" class="form-control" placeholder="Tyre Type"></div>
+            <div class="col-md-4"><input type="text" name="tyre_replace_reason_text" class="form-control" placeholder="Replace Reason"></div>
+            <div class="col-md-4"><input type="number" name="tyre_odometer_reading_value" class="form-control" placeholder="Odometer Reading"></div>
+            <div class="col-md-4"><input type="text" name="tyre_driver_name" class="form-control" placeholder="Driver Name"></div>
+            <div class="col-md-12"><textarea name="tyre_description_details" class="form-control" placeholder="Description"></textarea></div>
+            <div class="col-md-6"><input type="text" name="tyre_bill_number" class="form-control" placeholder="Bill Number"></div>
+            <div class="col-md-6"><input type="file" name="tyre_bill_document_file" class="form-control"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Add Tyre</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

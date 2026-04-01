@@ -1,0 +1,2023 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTrack360 Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    
+
+    <style>
+        /* Navbar Styling */
+
+        body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;                   
+    background: #f4f6f9; /* Light grey-blue background for a professional touch */
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    background-attachment: fixed;
+    color: #333;
+    
+}
+
+/* Optional: subtle gradient or just a solid background */
+body::before,
+body::after {
+    display: none; /* Removing abstract blurred blobs for a cleaner layout */
+}
+
+{% comment %} /* Containers and cards */
+ .card, .navbar, .btn, .form-select, .card-body {
+    position: relative;
+    z-index: 1;
+} {% endcomment %}
+
+        .navbar {
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-right: 50px;
+        }
+        .navbar-brand span.v {
+            color: #ff9800;
+        }
+        .navbar-brand span.track360 {
+            color: rgba(229, 150, 65, 0.935);
+        }
+
+        /* Dashboard Button */
+        .dashboard-btn {
+            background: linear-gradient(45deg, #4CAF50, #2E8B57);
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(46, 139, 87, 0.7);
+        }
+        .dashboard-btn:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        }
+        /* Space between nav-items */
+.navbar-nav .nav-item {
+    margin-right: 15px; /* adjust spacing between items */
+    margin-top: 10px;
+}
+
+/* Padding inside nav links */
+.navbar-nav .nav-link {
+    padding: 8px 12px;
+    border-radius: 6px; /* keeps hover effect nice & rounded */
+}
+
+
+        .navbar-nav .nav-item .nav-link:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            border-radius: 10px;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        } 
+        /* Show dropdown on hover */
+  .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    
+    margin-top: 0; /* Remove Bootstrap's small offset */
+    animation: fadeInDown 0.3s ease-in-out;
+    border-radius: 15px;
+    z-index: 1001;
+    position: absolute;
+    
+    
+  }
+
+
+
+
+
+
+
+/* Optional: Add smooth animation */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+        /* Stylish Logout Button */
+        .logout-btn {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 65, 108, 0.7);
+        }
+        .logout-btn:hover {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 65, 108, 1);
+        }
+
+        /* Info Panel Styling */
+        .info-panel {
+            background: #ffffff;
+            padding: 12px 20px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 98%;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        /* User Info Section */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .profile-icon {
+            font-size: 1.5rem;
+            color: #ff9800;
+        }
+
+        /* Features Section */
+.features-section {
+     display: flex;
+     flex-direction: row; /* Horizontal alignment */
+     gap: 15px; /* Space between features */
+     margin-top: 20px;
+     justify-content: flex-start; /* Align content to the left */
+     align-items: flex-start;
+     padding: 20px;
+     flex-wrap: wrap; /* Allow wrap on smaller screens if needed */
+      position: static;
+      
+      
+       
+}
+
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 130px;
+  height: 60px;
+
+  text-decoration: none;   /* IMPORTANT for <a> */
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #4c54af, #2e477d);
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+
+  box-sizing: border-box;
+}
+.feature:hover {
+       transform: translateY(-10px); /* Lift effect on hover */
+       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Deepened shadow on hover */
+       background: linear-gradient(135deg, #385f8e, #6c66bb); /* Gradient change on hover */
+}
+
+.feature-icon {
+      width: 35px;
+      height: 40px;
+      margin-bottom: 2px;
+      object-fit: contain;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+      
+}
+
+.feature:hover .feature-icon {
+       transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+.feature span {
+        font-size: 0.8rem; /* Smaller text size */
+        letter-spacing: 0.5px; /* Subtle spacing for clarity */
+}
+
+/* Date Filter Styling */
+.date-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.296);
+    margin-left:1050px;
+    margin-top: -70px;
+    height: 60px;
+}
+
+.date-filter-form input[type="date"] {
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.85rem;
+    width: 140px;
+}
+
+.date-filter-form button {
+    background-color: #001f7f;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 31, 127, 0.3);
+}
+.status-panel-right {
+  position: fixed;
+  top: 190px;
+  margin-left: 20px;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh  ;
+  
+}
+
+.status-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 0px 0px;
+  margin-bottom: 10px;
+  font-size: 0.875rem; /* Smaller text */
+  color: #fff;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Hover Glass Effect */
+.status-card:hover {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.vendor-icon {
+  width: 24px;
+  height: 24px;
+  stroke: #6366f1; /* Tailwind's Indigo-500 for modern feel */
+  stroke-width: 2;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.solid-person-icon {
+  font-size: 24px;
+  color: #1e3885; 
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.fa-box{
+  font-size: 24px;
+  color: #1e3885; 
+  margin-right: 8px;
+  vertical-align: middle;
+
+}
+
+.fa-clipboard-check{
+  font-size: 24px;
+  color: #1e3885; 
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.fa-truck{  
+font-size: 24px;
+  color: #1e3885; 
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.fa-gas-pump{
+  font-size: 24px;
+  color: #1e3885; 
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.fa-gas-pump{
+  font-size: 24px;
+  color: #1e3885; 
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.fa-cart-shopping{
+  font-size: 24px;
+  color: #1e3885; 
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.fa-screwdriver-wrench{
+  font-size: 24px;
+  color: #1e3885; 
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.fa-file-invoice{
+  font-size: 24px;
+  color: #1e3885; 
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.mileage-card-modern {
+    position: fixed;
+  width: 320px;
+  background: #d0ddeee5;
+  margin-left: 1540px;
+  margin-top:  -150px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.card-header-modern {
+  background: linear-gradient(135deg, #300a71f1, #2a3f7e);
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+.card-body-modern 
+  padding: 16px;
+}
+
+
+.dropdown-submenu {
+  position: relative;
+}
+
+/* Hide submenu by default */
+.dropdown-submenu .dropdownn-menu {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%; /* Makes it pop out to the right */
+  margin-top: -5px;
+  min-width: 220px;
+  background-color: #fff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px);
+  transition: all 0.25s ease-in-out;
+  z-index: 1000;
+}
+
+/* Show submenu on hover */
+.dropdown-submenu:hover > .dropdownn-menu {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+/* Dropdown item design */
+.dropdown-submenu .dropdownn-item {
+  display: block;
+  padding: 8px 18px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect */
+.dropdown-submenu .dropdownn-item:hover {
+  background-color: #f8f9fa;
+  color: #0d6efd;
+}
+
+/* Remove any default bullet or circle symbol */
+.dropdown-submenu .dropdownn-item::before {
+  content: "";
+}
+
+/* Right arrow for submenu indicator */
+.dropdown-submenu > a::after {
+  {% comment %} content: "›"; {% endcomment %}
+  float: right;
+  font-size: 0.9rem;
+  opacity: 0.6;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.dropdown-submenu:hover > a::after {
+  transform: translateX(2px);
+  opacity: 1;
+}
+
+.dropdown-menu,
+.dropdownn-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.log-entry {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.vehicle-img-modern {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  margin-right: 12px;
+  border-radius: 6px;
+}
+
+.log-details {
+  flex-grow: 1;
+}
+
+.vehicle-title {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.vehicle-subtext {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 2px;
+}
+
+.unit {
+  color: #999;
+}
+
+.view-more-btn {
+  background: #1a237e;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  transition: background 0.3s;
+}
+
+.view-more-btn:hover {
+  background: #0d1344;
+}
+
+.expiry-reminder-box {
+    min-width: 500px;
+    max-width: 650px;
+    border-radius: 12px;
+    margin-bottom: -179px;
+    margin-right: 520px;
+}
+
+.small-box {
+    min-width: 100px;
+    transition: transform 0.2s ease;
+}
+
+.small-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Main dropdown style */
+.simple-dropdown {
+  min-width: 230px;
+}
+
+.simple-dropdown .dropdown-item {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #333;
+  padding: 8px 14px;
+}
+
+.simple-dropdown .dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #007bff;
+}
+
+/* ===== Ultra Compact Maintenance Alerts ===== */
+.maintenance-box {
+  max-width: 650px;
+  height:130px;
+  margin: 12px auto;
+  background: #f6f7fb;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  margin-top:300px;
+  margin-left:600px;
+}
+
+/* ===== Header (Modern Alert Bar) ===== */
+.maintenance-header {
+  background: linear-gradient(90deg, #7f1d1d, #dc2626);
+  color: #fff;
+  padding: 8px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ===== Tabs Container ===== */
+.maintenance-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: linear-gradient(180deg, #f6f8fc, #eef1f7);
+  backdrop-filter: blur(6px);
+   z-index: 20; 
+}
+
+/* ===== Tab Card ===== */
+.tab {
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.75);
+  border-right: 1px solid rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tab:last-child {
+  border-right: none;
+}
+
+.tab:hover {
+  background: rgba(255,255,255,0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+/* ===== Title ===== */
+.tab-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.tab-title i {
+  font-size: 14px;
+  color: #6366f1;
+}
+
+/* ===== Count ===== */
+.tab-count {
+  margin-top: 6px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* Warning */
+.tab-count.warning {
+  color: #f59e0b;
+}
+
+/* ===== Active (Modern Indicator) ===== */
+.tab.active {
+  background: #ffffff;
+  box-shadow:
+    inset 0 -3px 0 #dc2626,
+    0 10px 25px rgba(220,38,38,0.15);
+}
+
+.tab.active .tab-title {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.tab.active .tab-title i {
+  color: #dc2626;
+}
+
+/* =======================================================
+   SERVICE MAINTENANCE ALERT MODAL – MODERN UI
+   ======================================================= */
+
+/* ==============================
+   SERVICE ALERT MODAL (PIXEL STYLE)
+   ============================== */
+
+/* Modal shell */
+.modal-content {
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+/* Header bar */
+.modal-header {
+  background: linear-gradient(90deg, #b31217, #e52d27);
+  color: #fff;
+  padding: 14px 22px;
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: none;
+}
+
+.modal-header .btn-close {
+  opacity: 0.9;
+}
+
+/* Body */
+.modal-body {
+  padding: 22px 24px;
+  background: #f9fafb;
+}
+
+/* Footer */
+.modal-footer {
+  background: #f4f6f8;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* ==============================
+   DONUT CHART
+   ============================== */
+
+#serviceAlertChart {
+  width: 240px !important;
+  height: 240px !important;
+  margin: 0 auto;
+  cursor: pointer;
+  pointer-events: auto !important;
+}
+
+/* Chart legend */
+.chart-legend,
+.modal-body .small {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #444;
+}
+
+.chart-legend div,
+.modal-body .small div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+/* ==============================
+   TABLE WRAPPER
+   ============================== */
+
+.table-responsive {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* Table head */
+.table thead th {
+  background: #f1f3f6;
+  font-size: 13px;
+  font-weight: 600;
+  color: #222;
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Table cells */
+.table td {
+  padding: 12px;
+  font-size: 14px;
+  border-color: #e5e7eb;
+}
+
+/* ==============================
+   ROW COLORS (LIKE IMAGE)
+   ============================== */
+
+.table-danger {
+  background: linear-gradient(90deg, #67e535, #5be3ad) !important;
+  color: #fff;
+  font-weight: 500;
+}
+
+.table-warning {
+  background: linear-gradient(90deg, #fbc02d, #ffe082) !important;
+  color: #5d4037;
+  font-weight: 500;
+}
+
+/* Neutral row */
+.table tbody tr:not(.table-danger):not(.table-warning) {
+  background: #ffffff;
+}
+
+/* Hover effect */
+.table tbody tr:hover {
+  filter: brightness(0.95);
+  transition: 0.2s ease;
+}
+
+/* ==============================
+   LEGEND DOTS
+   ============================== */
+
+.legend {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend.overdue { background: #e53935; }
+.legend.upcoming { background: #fbc02d; }
+.legend.critical { background: #159105; }
+
+/* ==============================
+   BACKDROP & INTERACTION FIX
+   ============================== */
+
+.modal {
+  z-index: 1055;
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.45) !important;
+  backdrop-filter: blur(2px);
+}
+
+/* Disable dashboard hover bleed */
+body.modal-open .feature {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Allow full modal interaction */
+.modal * {
+  pointer-events: auto;
+}
+
+/* FORCE mileage into row properly */
+#upcoming-maintenance .col {
+  position: 40px;
+  float: none !important;
+}
+
+.profile-img {
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+ </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <span class="v">V</span><span class="track360">Track360</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <button class="dashboard-btn"><i class="bi bi-speedometer2"></i> Dashboard</button>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="mastersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="bi bi-tools"></i> Masters
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="mastersDropdown">
+                <div id="main-content">
+                            <li><a class="dropdown-item" href="{% url 'manageparts' %}"><i class="bi bi-wrench-adjustable-circle"></i> Garage masters</a></li>
+                            <li><a class="dropdown-item" href="{% url 'create' %}"><i class="bi bi-truck-front-fill"></i> Vehicle Ownership</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inspection'%}"><i class="bi bi-compass"></i> Inspection types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'expense'%}"><i class="bi bi-graph-down-arrow"></i> Expense Types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'fueltype' %}"><i class="bi bi-fuel-pump-fill"></i> Fuel Types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'service' %}"><i class="bi bi-person-workspace"></i> Service Types</a></li>
+                            
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="garageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-tools"></i> Garage
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="garageDropdown">
+                            <li><a class="dropdown-item" href="{% url 'inspection_create'%}"><i class="bi bi-plus-square-fill"></i> Create new Incpection</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inspection_list' %}"><i class="bi bi-list"></i> Incpection Requests </a></li>
+                            <li><a class="dropdown-item" href="{% url 'completed_inspection_list'%}"><i class="bi bi-grid-3x3-gap-fill"></i> Completed Inspections </a></li>
+                            <li><a class="dropdown-item" href="{% url  'newquat'%}"><i class="bi bi-plus-circle-fill"></i> Create New Quotation </a></li>
+                            <li><a class="dropdown-item" href="{% url  'quatlist'%}"><i class="bi bi-file-text me-2"></i> All Quotation </a></li>
+                            <li><a class="dropdown-item" href="{% url  'approved_quotations'%}"><i class="bi bi-check-circle"></i> Approved Quotations </a></li>
+                           
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="vehiclesDriversDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-truck"></i> Vehicles & Drivers
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="vehiclesDriversDropdown">
+                            <li><a class="dropdown-item" href="{% url 'add_vehicle'%}"><i class="bi bi-plus-square-fill"></i> Add New Vehicle</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_vehicles'%}"><i class="bi bi-truck"></i> Vehicles</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_drivers'%}"><i class="bi bi-person"></i> Drivers</a></li>
+                            <li><a class="dropdown-item" href="{% url 'driver_reviews'%}"><i class="bi bi-star-fill"></i> Driver Reviews</a></li>
+                            
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="servicesFuelingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-fuel-pump"></i> Services & Fueling
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="servicesFuelingDropdown">
+                            <li><a class="dropdown-item" href="{% url 'service_create'%}"><i class="bi bi-patch-plus"></i> Create New Service</a></li>
+                            <li><a class="dropdown-item" href="{%url 'service_list'%}"><i class="bi-list-task"></i> All Services</a></li>
+                            <li><a class="dropdown-item" href="{%url 'manage_other_expenses'%}"><i class="bi-files"></i> Other Expenses</a></li>
+                            <li><a class="dropdown-item" href="{%url 'add_fueling'%}"><i class="bi-funnel"></i> New Fueling</a></li>
+                            <li><a class="dropdown-item" href="{%url 'fuel_report_list'%}"><i class="bi bi-list-ul"></i> Fueling Report</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_tyre'%}"><i class="bi-arrow-repeat"></i> Tyre Replacement</a></li>
+                            
+                        </ul>
+                    </li>
+                    
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-file-earmark-bar-graph"></i> Reports
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
+                            <li><a class="dropdown-item" href="{% url 'typewise'%}"><i class="bi-car-front-fill"></i> Servive Type Wise</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manageitems'%}"><i class="bi bi-box-seam-fill"></i> Parts Wise</a></li>
+                            <li><a class="dropdown-item" href="{% url 'purchase_list' %}"><i class="bi bi-cart-check-fill"></i> Purchase List</a></li>
+                            <li><a class="dropdown-item" href="{%url 'fuel_report_list'%}"><i class="bi-pie-chart"></i> Fueling Report</a></li>
+                             
+                               <li class="dropdown-submenu">
+                                  <a class="dropdownn-item dropdown-toggle" href="#">
+                                    <i class="bi bi-bell"></i> Vehicle Reminders
+                                  </a>
+                                  <ul class="dropdownn-menu">
+                                    <li><a class="dropdownn-item" href="{% url 'manage_insurances' %}">Vehicle Insurance</a></li>
+                                    <li><a class="dropdownn-item" href="{% url 'manage_registrations' %}">Vehicle Registration</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_roadtax'%}">Road Tax</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_permit'%}">Vehicle Permit</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_puc'%}">Vehicle PUC</a></li>
+                                    
+                                    <li><a class="dropdownn-item" href="{%url 'manage_fitness'%}">Fitness Certificate</a></li>
+                                    
+                                    
+                                  </ul>
+                                </li>
+                            <li><a class="dropdown-item" href="#"><i class="bi-person-fill"></i>Drive Reminders</a></li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+                <button class="logout-btn"
+               onclick="window.location.href='{% url 'login' %}'">Logout</button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Info Panel -->
+    <div class="info-panel">
+        <span>Welcome To <strong>VTrack360</strong></span>
+        <div class="user-info d-flex align-items-center gap-2">
+
+          <span class="user-name" style="font-size: 15px; font-weight: 600; color: #ffffff; background: linear-gradient(90deg,#6366f1,#3b82f6); padding: 5px 12px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+               Hi {{ user.first_name|default:user.username }}
+          </span>
+
+          {% if profile_pic %}
+               <img src="{{ profile_pic }}"
+                 width="35" height="35"
+                  class="rounded-circle"
+                style="object-fit: cover;">
+           {% else %}
+                 <img src="https://ui-avatars.com/api/?name={{ user.first_name|default:user.username }}"
+                   width="35" height="35"
+                     class="rounded-circle">
+           {% endif %}
+
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section">
+      
+        <a href="{% url 'vendor_add' %}" class="feature">
+            <img src="{% static 'images/officer.png' %}" class="feature-icon" alt="Feature Icon">
+
+            <span>Vendor</span>
+        </a>
+        <a href="{% url 'add_item' %}" class="feature">
+            <img src="{% static 'images/procurement.png' %}" class="feature-icon" alt="Feature Icon">
+            <span>Items</span>
+        </a>
+        <a href="{% url 'inspection_create' %}" class="feature">
+            <img src="{% static 'images/car.png' %}"  class="feature-icon" alt="Feature Icon">
+            <span>Inspection</span>
+        </a>
+        <a href="{% url 'add_vehicle' %}" class="feature">
+            <img src="{% static 'images/fleet-management.png' %}"  class="feature-icon" alt="Feature Icon">
+            <span>Vehicle</span>
+        </a>
+        <a href="{% url 'add_fueling' %}" class="feature">
+            <img src="{% static 'images/gas-station.png' %}"  class="feature-icon" alt="Feature Icon">
+            <span>Fueling</span>
+        </a>
+        <a href="{% url 'create_purchase' %}" class="feature">
+            <img src="{% static 'images/business-report.png' %}"  class="feature-icon" alt="Feature Icon">
+            <span>Purchase</span>
+        </a>
+        <a href="{% url 'service_create' %}" class="feature">
+            <img src="{% static 'images/mechanic.png' %}"  class="feature-icon" alt="Feature Icon">
+            <span>Services</span>
+        </a>
+        <a href="{% url 'newquat' %}" class="feature">
+            <img src="{% static 'images/car_1.png' %}"  class="feature-icon" alt="Feature Icon">
+            <span>Quotation</span>
+        </a>
+    
+        {% comment %} <form class="date-filter-form">
+            <label for="fromDate">From</label>
+            <input type="date" id="fromDate">
+        
+            <label for="toDate">To</label>
+            <input type="date" id="toDate">
+        
+            <button type="submit">Submit</button>
+        </form> {% endcomment %}
+        
+            
+    
+    </div>
+
+    <!-- UPCOMING MAINTENANCE ALERTS -->
+<div class="container mt-4">
+  <div class="maintenance-box">
+
+    <div class="maintenance-header">
+      UPCOMING MAINTENANCE ALERTS
+    </div>
+
+    <div class="maintenance-tabs">
+
+      <div class="tab active"
+            data-bs-toggle="modal"
+            data-bs-target="#serviceAlertModal">
+            <div class="tab-title">
+              <i class="bi bi-wrench"></i> Services
+            </div>
+         <div class="tab-count warning" id="serviceAlertCount">0 Alerts</div>
+      </div>
+
+      <div class="tab"
+        data-bs-toggle="modal"
+         data-bs-target="#inspectionAlertModal">
+        <div class="tab-title">
+          <i class="bi bi-clipboard-check"></i> Inspection
+        </div>
+        <div class="tab-count" id="inspectionAlertCount">0 Alerts</div>
+       </div>
+
+      <div class="tab" data-bs-toggle="modal" data-bs-target="#fuelAlertModal">
+         <div class="tab-title">
+           <i class="bi bi-fuel-pump"></i> 2 Fuel
+         </div>
+         <div class="tab-count danger" id="fuelAlertCount">0 Alerts</div>
+     </div>
+
+     <div class="tab" data-bs-toggle="modal" data-bs-target="#mileageAlertModal">
+
+       <div class="tab-title">
+         <i class="bi bi-speedometer2"></i> Mileage
+       </div>
+
+      <div class="tab-count">3 Alerts</div>
+
+     </div>
+
+    </div>
+
+  </div>
+</div>
+
+    
+    <!-- Current Status Cards Section -->
+    <div class="status-panel-right">
+    <div class="row g-3">
+      <div class="col-md-3 col-sm-6">
+       <a href="{% url 'vendor_list' %}" class="text-decoration-none">
+       <div class="card status-card shadow-sm hover-card">
+        <div class="card-body text-center">
+          <h6 class="card-title text-muted mb-1">
+          <i class="fas fa-user solid-person-icon me-1"></i> Vendors
+         </h6>
+         <h5 class="card-text text-success fw-bold"><span id="vendorCountt">0</span> Active</h5>
+        </div>
+      </div>
+     </a>
+    </div>
+
+      <!-- Items -->
+    <div class="col-md-3 col-sm-6">
+      <a href="{% url 'manageitems'%}" class="text-decoration-none">
+        <div class="card status-card shadow-sm hover-card">
+          <div class="card-body text-center">
+            <h6 class="card-title text-muted mb-1">
+              <i class="fas fa-box me-1"></i> Items
+            </h6>
+            <h5 class="card-text text-primary fw-bold"><span id="itemCount">0</span> Listed</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+      <!-- Inspections -->
+    <div class="col-md-3 col-sm-6">
+      <a href="{% url 'inspection_list'%}" class="text-decoration-none">
+        <div class="card status-card shadow-sm hover-card">
+          <div class="card-body text-center">
+            <h6 class="card-title text-muted mb-1">
+              <i class="fas fa-clipboard-check me-1"></i> Inspections
+            </h6>
+            <h5 class="card-text text-warning fw-bold"><span id="inspectionCount">0</span> Pending</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+      <!-- Vehicles -->
+    <div class="col-md-3 col-sm-6">
+      <a href="{% url 'manage_vehicles'%}" class="text-decoration-none">
+        <div class="card status-card shadow-sm hover-card">
+          <div class="card-body text-center">
+            <h6 class="card-title text-muted mb-1">
+              <i class="fas fa-truck me-1"></i> Vehicles
+            </h6>
+            <h5 class="card-text text-success fw-bold"><span id="vehicleCount">0</span>Registered</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+      <!-- Fueling -->
+    <div class="col-md-3 col-sm-6">
+      <a href="{% url 'fuel_report_list'%}" class="text-decoration-none">
+        <div class="card status-card shadow-sm hover-card">
+          <div class="card-body text-center">
+            <h6 class="card-title text-muted mb-1">
+              <i class="fas fa-gas-pump me-1"></i> Fueling
+            </h6>
+            <h5 class="card-text text-danger fw-bold"><span id="fuelingCount">0</span>Alerts</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+      <!-- Purchases -->
+    <div class="col-md-3 col-sm-6">
+      <a href="{% url 'purchase_list'%}" class="text-decoration-none">
+        <div class="card status-card shadow-sm hover-card">
+          <div class="card-body text-center">
+            <h6 class="card-title text-muted mb-1">
+              <i class="fas fa-cart-shopping me-1"></i> Purchases
+            </h6>
+            <h5 class="card-text text-info fw-bold"><span id="purchaseCount">0</span> Orders</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+      <!-- Services -->
+    <div class="col-md-3 col-sm-6">
+      <a href="{% url 'service_list'%}" class="text-decoration-none">
+        <div class="card status-card shadow-sm hover-card">
+          <div class="card-body text-center">
+            <h6 class="card-title text-muted mb-1">
+              <i class="fas fa-screwdriver-wrench me-1"></i> Services
+            </h6>
+            <h5 class="card-text text-primary fw-bold"><span id="serviceCount">0</span> Ongoing</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+       <!-- Quotations -->
+    <div class="col-md-3 col-sm-6">
+      <a href="{% url 'approved_quotations' %}" class="text-decoration-none">
+        <div class="card status-card shadow-sm hover-card">
+          <div class="card-body text-center">
+            <h6 class="card-title text-muted mb-1">
+              <i class="fas fa-file-invoice me-1"></i> Quotations
+            </h6>
+            <h5 class="card-text text-success fw-bold"><span id="quotationCount">0</span> Sent</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+    <div class="mileage-card-modern shadow-sm">
+        <div class="card-header-modern">
+          VEHICLE MILEAGE LOGS
+        </div>
+        <div class="card-body-modern">
+          <div class="log-entry">
+            <img src="{% static 'images/OIP.jpeg' %}" alt="Car" class="vehicle-img-modern">
+            <div class="log-details">
+              <div class="vehicle-title">T-Cor - SF03KT9100</div>
+              <div class="vehicle-subtext">38.64 <span class="unit">/Avg. KM</span></div>
+            </div>
+          </div>
+          <div class="log-entry">
+            <img src="{% static 'images/tata-signa-5530-truck.png' %}" alt="Truck" class="vehicle-img-modern">
+            <div class="log-details">
+              <div class="vehicle-title">T-407 - RJ04RE6365</div>
+              <div class="vehicle-subtext">10.83 <span class="unit">/Avg. KM</span></div>
+            </div>
+          </div>
+          <div class="text-center mt-3">
+            <button class="btn btn-primary view-more-btn"
+               onclick="window.location.href='{% url 'mileage' %}'">View More</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="position-absolute end-0 bottom-0 me-4 mb-4" style="z-index: 1000;">
+        <div class="card border-0 shadow-sm rounded expiry-reminder-box">
+          <div class="text-white text-center fw-semibold py-2 rounded-top" 
+              style="background: linear-gradient(to right, #4B49AC);">
+            UPCOMING EXPIRY DATE REMINDERS FOR VEHICLES DOCUMENTS
+          </div>
+          <div class="card-body bg-light d-flex flex-wrap justify-content-center gap-3 p-3">
+            <a href="{% url 'manage_insurances' %}" class="text-decoration-none">
+                  <div class="text-center border rounded bg-white px-3 py-2 small-box shadow-sm">
+                  <div class="text-muted small">Insurance</div>
+                  <div class="fw-bold fs-5 text-primary" id="vehicleCount">0</div>
+                </div>
+            </a>
+
+            <a href="{% url 'manage_registrations' %}" class="text-decoration-none">
+              <div class="text-center border rounded bg-white px-3 py-2 small-box shadow-sm">
+               <div class="text-muted small">Registrations</div>
+               <div class="fw-bold fs-5 text-primary">1</div>
+              </div>
+            </a>
+
+            <a href="{%url 'manage_roadtax'%}" class="text-decoration-none">
+              <div class="text-center border rounded bg-white px-3 py-2 small-box shadow-sm">
+                <div class="text-muted small">Road Tax</div>
+                <div class="fw-bold fs-5 text-primary">3</div>
+              </div>
+            </a>
+
+            <a href="{%url 'manage_puc'%}" class="text-decoration-none">
+              <div class="text-center border rounded bg-white px-3 py-2 small-box shadow-sm">
+               <div class="text-muted small">PUC</div>
+               <div class="fw-bold fs-5 text-primary">2</div>
+              </div>
+            </a>
+
+            <a href="{%url 'manage_permit'%}" class="text-decoration-none">
+              <div class="text-center border rounded bg-white px-3 py-2 small-box shadow-sm">
+               <div class="text-muted small">State Permit</div>
+               <div class="fw-bold fs-5 text-primary">2</div>
+              </div>
+            </a>
+
+            <a href="{%url 'manage_fitness'%}" class="text-decoration-none">
+             <div class="text-center border rounded bg-white px-3 py-2 small-box shadow-sm">
+               <div class="text-muted small">Fitness</div>
+               <div class="fw-bold fs-5 text-primary">3</div>
+             </div>
+            </a>
+           
+            
+          </div>
+        </div>
+      </div>
+
+<!-- SERVICE MAINTENANCE ALERT MODAL -->
+<div class="modal fade" id="serviceAlertModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header text-white"
+           style="background: linear-gradient(90deg,#7f1d1d,#dc2626);">
+        <h5 class="modal-title">
+          <i class="bi bi-wrench me-2"></i> Service Maintenance Alerts
+        </h5>
+        <button type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+        <div class="row g-4">
+
+          <!-- LEFT : CHART -->
+          <div class="col-md-4 text-center">
+            <div style="width:260px;height:260px;margin:auto;">
+              <canvas id="serviceAlertChart"></canvas>
+            </div>
+
+            <div class="mt-3 small text-start ps-4">
+              <div><span class="badge bg-danger me-2">&nbsp;</span> Critical</div>
+              <div><span class="badge bg-warning me-2">&nbsp;</span> Medium</div>
+              <div><span class="badge bg-success me-2">&nbsp;</span> Low</div>
+            </div>
+          </div>
+
+          <!-- RIGHT : TABLE -->
+          <div class="col-md-8">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Service No</th>
+                    <th>Title</th>
+                    <th>Vehicle</th>
+                    <th>Next Service</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+
+                <!-- 🔴 MUST BE EMPTY (FILLED VIA JS) -->
+                <tbody id="serviceAlertTableBody">
+                  <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                      Loading service alerts...
+                    </td>
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      {% comment %} <div class="modal-footer">
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+          Close
+        </button>
+      </div> {% endcomment %}
+
+    </div>
+  </div>
+</div>
+
+<!-- INSPECTION ALERT MODAL -->
+<div class="modal fade" id="inspectionAlertModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header text-white"
+           style="background: linear-gradient(90deg,#0f172a,#2563eb);">
+        <h5 class="modal-title">
+          <i class="bi bi-clipboard-check me-2"></i> Inspection Alerts
+        </h5>
+        <button type="button" class="btn-close btn-close-white"
+                data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row g-4">
+
+          <!-- CHART -->
+          <div class="col-md-4 text-center">
+            <div style="width:260px;height:260px;margin:auto;">
+              <canvas id="inspectionAlertChart"></canvas>
+            </div>
+
+            <div class="mt-3 small text-start ps-4">
+              <div><span class="badge bg-danger me-2">&nbsp;</span> Critical</div>
+              <div><span class="badge bg-warning me-2">&nbsp;</span> Medium</div>
+              <div><span class="badge bg-success me-2">&nbsp;</span> Low</div>
+            </div>
+          </div>
+
+          <!-- TABLE -->
+          <div class="col-md-8">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Inspection No</th>
+                    <th>Title</th>
+                    <th>Vehicle</th>
+                    <th>Inspection Date</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+
+                <tbody id="inspectionAlertTableBody">
+                  <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                      Loading inspection alerts...
+                    </td>
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {% comment %} <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div> {% endcomment %}
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="fuelAlertModal" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header text-white"
+           style="background: linear-gradient(90deg,#7c2d12,#ea580c);">
+        <h5 class="modal-title">
+          <i class="bi bi-fuel-pump me-2"></i> Fuel Alerts
+        </h5>
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row g-4">
+
+          <!-- CHART -->
+          <div class="col-md-4 text-center">
+            <div style="width:260px;height:260px;margin:auto;">
+              <canvas id="fuelAlertChart"></canvas>
+            </div>
+
+            <div class="mt-3 small text-start ps-4">
+              <div><span class="badge bg-danger me-2">&nbsp;</span> High Amount</div>
+              <div><span class="badge bg-warning me-2">&nbsp;</span> High Quantity</div>
+              <div><span class="badge bg-secondary me-2">&nbsp;</span> Missing Invoice</div>
+            </div>
+          </div>
+
+          <!-- TABLE -->
+          <div class="col-md-8">
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Fuel Code</th>
+                    <th>Date</th>
+                    <th>Vehicle</th>
+                    <th>Fuel</th>
+                    <th>Qty</th>
+                    <th>Amount</th>
+                    <th>Invoice</th>
+                  </tr>
+                </thead>
+                <tbody id="fuelAlertTableBody">
+                  <tr>
+                    <td colspan="7" class="text-center text-muted">Loading fuel alerts…</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {% comment %} <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div> {% endcomment %}
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ================= MILEAGE ALERT MODAL ================= -->
+<div class="modal fade" id="mileageAlertModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header text-white"
+           style="background: linear-gradient(90deg,#065f46,#10b981);">
+        <h5 class="modal-title">
+          <i class="bi bi-speedometer2 me-2"></i> Mileage Alerts
+        </h5>
+        <button type="button" class="btn-close btn-close-white"
+                data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+        <div class="row g-4">
+
+          <!-- CHART -->
+          <div class="col-md-4 text-center">
+            <div style="width:260px;height:260px;margin:auto;">
+              <canvas id="mileageAlertChart"></canvas>
+            </div>
+
+            <div class="mt-3 small text-start ps-4">
+              <div><span class="badge bg-danger me-2">&nbsp;</span> Critical</div>
+              <div><span class="badge bg-warning me-2">&nbsp;</span> Medium</div>
+              <div><span class="badge bg-success me-2">&nbsp;</span> Good</div>
+            </div>
+          </div>
+
+          <!-- TABLE -->
+          <div class="col-md-8">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Vehicle</th>
+                    <th>Plate No</th>
+                    <th>Avg KM/L</th>
+                    <th>Status</th>
+                    <th>Updated Date</th>
+                  </tr>
+                </thead>
+
+                <tbody id="mileageAlertTableBody">
+                  <tr>
+                    <td colspan="5" class="text-center text-muted py-4">
+                      Loading mileage alerts...
+                    </td>
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      {% comment %} <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div> {% endcomment %}
+
+    </div>
+  </div>
+</div>
+    
+      
+      
+  </div>
+
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      lucide.createIcons();
+      document.addEventListener("DOMContentLoaded", () => {
+      fetch("{% url 'dashboard_counts' %}")
+      .then(response => response.json())
+      .then(data => {
+      document.getElementById("vendorCountt").textContent = data.vendors;
+      document.getElementById("itemCount").textContent = data.items;
+      document.getElementById("inspectionCount").textContent = data.inspections;
+      document.getElementById("vehicleCount").textContent = data.vehicles;
+      document.getElementById("fuelingCount").textContent = data.fueling_alerts;
+      document.getElementById("purchaseCount").textContent = data.purchases;
+      document.getElementById("serviceCount").textContent = data.services;
+      document.getElementById("quotationCount").textContent = data.quotations;
+      document.getElementById("fitnessCount").textContent = data.fitness;
+      document.getElementById("permitCount").textContent = data.permit;
+    })
+    .catch(error => console.error("Error loading counts:", error));
+});
+
+fetch("{% url 'service_alerts' %}")
+  .then(res => res.json())
+  .then(data => {
+    const count = data.services.filter(
+      s => s.priority?.toLowerCase() === "critical"
+    ).length;
+
+    document.getElementById("serviceAlertCount").innerText =
+      count + " Alerts";
+  });
+let serviceChart = null;
+
+function openServiceAlertModal() {
+  const modal = bootstrap.Modal.getOrCreateInstance(
+    document.getElementById("serviceAlertModal")
+  );
+  modal.show();
+}
+
+document.getElementById("serviceAlertModal")
+  .addEventListener("shown.bs.modal", async () => {
+
+    const res = await fetch("{% url 'service_alerts' %}");
+    const data = await res.json();
+
+    // ---------------- TABLE ----------------
+const tbody = document.getElementById("serviceAlertTableBody");
+tbody.innerHTML = "";
+
+data.services.forEach(s => {
+
+  // 🔴 ONLY CRITICAL = RED
+  const rowClass =
+    s.priority?.toLowerCase() === "critical" ? "table-danger" : "";
+
+  tbody.innerHTML += `
+    <tr class="${rowClass}">
+      <td>${s.service_number}</td>
+      <td>${s.title}</td>
+      <td>${s.vehicle}</td>
+      <td>${s.next_service_date}</td>
+      <td>${s.priority}</td>
+      <td>${s.status}</td>
+    </tr>
+  `;
+});
+
+
+    const ctx = document
+  .getElementById("serviceAlertChart")
+  .getContext("2d");
+
+// Reset counters
+let low = 0;
+let medium = 0;
+let high = 0;
+let critical = 0;
+
+// 🔥 COUNT USING BACKEND SERVICES
+data.services.forEach(service => {
+  switch (service.priority?.toLowerCase()) {
+    case "low":
+      low++;
+      break;
+    case "medium":
+      medium++;
+      break;
+    case "high":
+      high++;
+      break;
+    case "critical":
+      critical++;
+      break;
+  }
+});
+
+const total = low + medium + high + critical;
+
+// Prevent empty chart crash
+const chartData = total === 0
+  ? [1, 1, 1, 1]
+  : [low, medium, high, critical];
+
+const chartColors = total === 0
+  ? ["#e5e7eb", "#e5e7eb", "#e5e7eb", "#e5e7eb"]
+  : ["#22c55e", "#facc15", "#f97316", "#dc2626"];
+
+if (serviceChart) serviceChart.destroy();
+
+serviceChart = new Chart(ctx, {
+  type: "doughnut",
+  data: {
+    labels: ["Low", "Medium", "High", "Critical"],
+    datasets: [{
+      data: chartData,
+      backgroundColor: chartColors,
+      hoverOffset: 22
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: "70%",
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        enabled: total > 0,
+        callbacks: {
+          label: (ctx) => `${ctx.label}: ${ctx.raw}`
+        }
+      }
+    }
+  }
+});
+});
+
+let inspectionChart = null;
+
+function normalizeInspectionStatus(status) {
+  if (!status) return "ignore";
+
+  status = status.toLowerCase();
+
+  if (status === "pending") return "pending";
+  if (status === "rejected") return "critical";
+  if (status.includes("reinspection")) return "critical";
+
+  return "ignore"; // completed
+}
+
+document
+  .getElementById("inspectionAlertModal")
+  .addEventListener("shown.bs.modal", async () => {
+
+    const res = await fetch("{% url 'inspection_alerts' %}");
+    const data = await res.json();
+
+    const tbody = document.getElementById("inspectionAlertTableBody");
+    tbody.innerHTML = "";
+
+    let pending = 0;
+    let critical = 0;
+
+    // ---------------- TABLE ----------------
+    data.inspections.forEach(i => {
+      const normalized = normalizeInspectionStatus(i.status);
+
+      if (normalized === "ignore") return;
+
+      if (normalized === "pending") pending++;
+      if (normalized === "critical") critical++;
+
+      const rowClass =
+        normalized === "critical" ? "table-danger" : "";
+
+      tbody.innerHTML += `
+        <tr class="${rowClass}">
+          <td>${i.inspection_code}</td>
+          <td>${i.title}</td>
+          <td>${i.vehicle}</td>
+          <td>${i.inspection_date}</td>
+          <td>${i.inspection_type}</td>
+          <td>${i.status}</td>
+        </tr>
+      `;
+    });
+
+    // ---------------- CHART ----------------
+    const ctx = document
+      .getElementById("inspectionAlertChart")
+      .getContext("2d");
+
+    if (inspectionChart) inspectionChart.destroy();
+
+    const total = pending + critical;
+
+    inspectionChart = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Pending", "Critical"],
+        datasets: [{
+          data: total === 0 ? [1, 1] : [pending, critical],
+          backgroundColor: total === 0
+            ? ["#e5e7eb", "#e5e7eb"]
+            : ["#facc15", "#dc2626"],
+          hoverOffset: 22
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "70%",
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            enabled: total > 0,
+            callbacks: {
+              label: ctx => `${ctx.label}: ${ctx.raw}`
+            }
+          }
+        }
+      }
+    });
+});
+
+
+fetch("{% url 'inspection_alerts' %}")
+  .then(res => res.json())
+  .then(data => {
+
+    const list = data.inspections || data; // handles both formats
+
+    const count = list.filter(i => {
+      const status = i.status?.toLowerCase() || "";
+      return status === "rejected" || status.includes("reinspection");
+    }).length;
+
+    document.getElementById("inspectionAlertCount").innerText =
+      count + " Alerts";
+  })
+  .catch(err => console.error("Inspection fetch error:", err));
+
+let fuelChart = null;
+
+document.getElementById("fuelAlertModal")
+  .addEventListener("shown.bs.modal", async () => {
+
+    const res = await fetch("{% url 'fuel_alerts' %}");
+    const data = await res.json();
+
+    // ================= TABLE =================
+    const tbody = document.getElementById("fuelAlertTableBody");
+    tbody.innerHTML = "";
+
+    let highAmount = 0;
+    let highQuantity = 0;
+    let missingInvoice = 0;
+
+    data.fuels.forEach(f => {
+
+      // 🔒 Force numeric values
+      const amount = Number(f.amount);
+      const quantity = Number(f.quantity);
+
+      let rowClass = "";
+
+      if (amount > 30000) {
+        highAmount++;
+        rowClass = "table-danger";
+      } 
+      else if (quantity > 500) {
+        highQuantity++;
+        rowClass = "table-warning";
+      } 
+      else if (!f.invoice || f.invoice === "-") {
+        missingInvoice++;
+        rowClass = "table-secondary";
+      }
+
+      tbody.innerHTML += `
+        <tr class="${rowClass}">
+          <td>${f.fuel_code}</td>
+          <td>${f.date}</td>
+          <td>${f.vehicle}</td>
+          <td>${f.fuel_type}</td>
+          <td>${quantity}</td>
+          <td>${amount}</td>
+          <td>${f.invoice ?? "-"}</td>
+        </tr>
+      `;
+    });
+
+    // ================= BAR CHART =================
+    const ctx = document.getElementById("fuelAlertChart").getContext("2d");
+
+    if (fuelChart) fuelChart.destroy();
+
+    const total = highAmount + highQuantity + missingInvoice;
+
+    fuelChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["High Amount", "High Quantity", "Missing Invoice"],
+        datasets: [{
+          data: total === 0 ? [1, 1, 1] : [
+            highAmount,
+            highQuantity,
+            missingInvoice
+          ],
+          backgroundColor: total === 0
+            ? ["#e5e7eb", "#e5e7eb", "#e5e7eb"]
+            : ["#dc2626", "#facc15", "#9ca3af"],
+          borderRadius: 6,
+          barThickness: 40
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { precision: 0 }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            enabled: total > 0,
+            callbacks: {
+              label: ctx => `${ctx.raw} alert(s)`
+            }
+          }
+        }
+      }
+    });
+
+});
+
+fetch("{% url 'fuel_alerts' %}")
+  .then(res => res.json())
+  .then(data => {
+
+    const count = data.fuels.filter(f =>
+      Number(f.amount) > 30000
+    ).length;
+
+    document.getElementById("fuelAlertCount").innerText =
+      count + " Alerts";
+  })
+  .catch(err => console.error("Fuel error:", err));
+
+// ===============================
+// ✅ MILEAGE ALERT (FINAL WORKING)
+// ===============================
+
+let mileageChart = null;
+
+// ✅ OPEN MODAL FUNCTION
+function openMileageModal() {
+  const modal = bootstrap.Modal.getOrCreateInstance(
+    document.getElementById("mileageAlertModal")
+  );
+  modal.show();
+}
+
+// ✅ LOAD DATA WHEN MODAL OPENS
+document.getElementById("mileageAlertModal")
+  .addEventListener("shown.bs.modal", function () {
+
+    const vehicles = [
+      { name: "Baleno", plate: "RJ05KT01236", mileage: 22.83, date: "25/07/2025" },
+      { name: "Camry", plate: "DE41K9632", mileage: 11.11, date: "20/05/2025" },
+      { name: "Swift", plate: "MH12AB4567", mileage: 38.64, date: "01/03/2025" },
+      { name: "Innova", plate: "KA19ME2020", mileage: 10.83, date: "13/03/2025" },
+      { name: "Fortuner", plate: "DL03PK9876", mileage: 27.56, date: "05/04/2025" },
+      { name: "EcoSport", plate: "TN09LX5521", mileage: 27.05, date: "19/06/2025" },
+      { name: "Venue", plate: "GJ01RT2345", mileage: 23.51, date: "10/08/2025" }
+    ];
+
+    const tbody = document.getElementById("mileageAlertTableBody");
+
+    let rows = "";
+    let good = 0, medium = 0, critical = 0;
+
+    vehicles.forEach(v => {
+
+      let status = "";
+      let rowClass = "";
+
+      if (v.mileage < 15) {
+        status = "Critical";
+        rowClass = "table-danger";
+        critical++;
+      } 
+      else if (v.mileage <= 25) {
+        status = "Medium";
+        rowClass = "table-warning";
+        medium++;
+      } 
+      else {
+        status = "Good";
+        rowClass = "table-success";
+        good++;
+      }
+
+      rows += `
+        <tr class="${rowClass}">
+          <td>${v.name}</td>
+          <td>${v.plate}</td>
+          <td>${v.mileage}</td>
+          <td>${status}</td>
+          <td>${v.date}</td>
+        </tr>
+      `;
+    });
+
+    tbody.innerHTML = rows;
+
+    // ✅ CHART
+    const ctx = document.getElementById("mileageAlertChart").getContext("2d");
+
+    if (mileageChart) mileageChart.destroy();
+
+    mileageChart = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Good", "Medium", "Critical"],
+        datasets: [{
+          data: [good, medium, critical],
+          backgroundColor: ["#22c55e", "#facc15", "#dc2626"]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "70%",
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+
+});
+
+document.addEventListener("click", function (e) {
+
+    // 🔥 List ALL your modal IDs here
+    const modals = [
+        "serviceAlertModal",
+        "inspectionAlertModal",
+        "fuelAlertModal",
+        "mileageAlertModal"
+    ];
+
+    modals.forEach(function (modalId) {
+        const modal = document.getElementById(modalId);
+
+        if (modal && modal.classList.contains("show")) {
+            const modalContent = modal.querySelector(".modal-content");
+
+            // If clicked outside modal → refresh
+            if (!modalContent.contains(e.target)) {
+                location.reload();
+            }
+        }
+    });
+
+});
+</script>
+</body>
+</html>

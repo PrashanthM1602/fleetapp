@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+(function () {
+  const settings = JSON.parse(localStorage.getItem("settings"));
+  if (settings?.dark) {
+    document.documentElement.classList.add("dark");
+  }
+})();
+</script>
+
+<meta charset="UTF-8">
+<title>Accepted Order</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- QR SCANNER -->
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<!-- QR GENERATOR -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+<style>
+
+    :root {
+    --bg: #f4f6fb;
+    --card: #ffffff;
+    --text: #000000;
+}
+
+.dark {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #ffffff;
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.header {
+    background: #2563eb;
+    color: white;
+    padding: 16px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card {
+    background: var(--card);
+    margin: 16px;
+    padding: 18px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 12px;
+    cursor: pointer;
+}
+
+.blue { background: #2563eb; color: white; }
+.green { background: #16a34a; color: white; }
+
+#qrSection { display: none; }
+#customerQR { text-align: center; }
+#qr-reader { max-width: 400px; margin: auto; }
+</style>
+</head>
+
+<body>
+
+<!-- ===== SECURITY CHECK ===== -->
+<script>
+if (localStorage.getItem("trip_status") !== "ACCEPTED") {
+    alert("Invalid access");
+    window.location.href = "/driver/";
+}
+</script>
+
+<div class="header">Order Accepted</div>
+
+<!-- ===== PICKUP DETAILS ===== -->
+<div class="card" id="pickupCard">
+    <p><b>Pickup:</b> <span id="pickupText"></span></p>
+    <p><b>Drop:</b> <span id="dropText"></span></p>
+
+    <button class="blue" onclick="goToLocation()">🚗 GO TO LOCATION</button>
+    <button class="green" onclick="reachedPickup()">✓ REACHED</button>
+</div>
+
+<!-- ===== QR DISPLAY ===== -->
+<div class="card" id="customerQR">
+    <p><b>Scan This QR to Start Trip</b></p>
+    <div id="qrcode"></div>
+</div>
+
+<!-- ===== QR SCANNER ===== -->
+<div class="card" id="qrSection">
+    <p><b>Scan QR Code</b></p>
+    <div id="qr-reader"></div>
+    <p id="scanResult" style="text-align:center;font-weight:bold;"></p>
+</div>
+
+<script>
+/* ================= CONSTANT ================= */
+const COMMON_QR_VALUE = "ORD123";
+let scanner = null;
+let scannedOnce = false;
+
+/* ================= LOAD TRIP ================= */
+const tripData = JSON.parse(localStorage.getItem("active_trip"));
+
+if (!tripData) {
+    alert("No active trip found");
+    window.location.href = "/driver/";
+}
+
+document.getElementById("pickupText").innerText = tripData.pickup;
+document.getElementById("dropText").innerText = tripData.drop;
+
+/* ================= GENERATE QR ================= */
+new QRCode(document.getElementById("qrcode"), {
+    text: COMMON_QR_VALUE,
+    width: 220,
+    height: 220,
+    correctLevel: QRCode.CorrectLevel.H
+});
+
+/* ================= MAP ================= */
+function goToLocation() {
+    const [lat, lng] = tripData.pickupCoords;
+    window.open(`https://www.google.com/maps?q=${lat},${lng}`);
+}
+
+/* ================= REACHED ================= */
+function reachedPickup() {
+    document.getElementById("pickupCard").style.display = "none";
+    document.getElementById("customerQR").style.display = "none";
+    document.getElementById("qrSection").style.display = "block";
+    startQRScanner();
+}
+
+/* ================= WORKING QR SCANNER ================= */
+function startQRScanner() {
+    if (scanner) return; // prevent multiple starts
+
+    scanner = new Html5Qrcode("qr-reader");
+
+    scanner.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
+
+        function onScanSuccess(decodedText) {
+            if (scannedOnce) return;
+            scannedOnce = true;
+
+            document.getElementById("scanResult").innerText =
+                "SCANNED: " + decodedText;
+
+            // OPTIONAL strict check
+            if (decodedText.trim() === COMMON_QR_VALUE) {
+                localStorage.setItem("trip_status", "STARTED");
+
+                alert("Trip Started");
+
+                scanner.stop().then(() => {
+                    window.location.href = "/driver/tracking/";
+                });
+            } else {
+                alert("Invalid QR Code");
+                scannedOnce = false;
+            }
+        },
+
+        function onScanError(error) {
+            // ignore scan noise
+        }
+    ).catch(err => {
+        alert("Camera error: " + err);
+    });
+}
+</script>
+
+</body>
+</html>

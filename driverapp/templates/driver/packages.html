@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function () {
+  const settings = JSON.parse(localStorage.getItem("settings"));
+  if (settings?.dark) {
+    document.documentElement.classList.add("dark");
+  }
+})();
+</script>
+<meta charset="UTF-8">
+<title>Logistics Packages</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+    --bg: #f2f2f2;
+    --card: #ffffff;
+    --text: #000000;
+    --sub: #555;
+}
+
+.dark {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #ffffff;
+    --sub: #cbd5f5;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* HEADER */
+.header {
+    background: #1976ff;
+    color: white;
+    padding: 14px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.back-btn {
+    font-size: 22px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* CONTROLS */
+.controls {
+    padding: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.controls input,
+.controls select {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* LIST */
+.container {
+    padding: 12px;
+}
+
+.package-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.package-title {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.package-desc {
+    color: #555;
+    font-size: 14px;
+    margin: 6px 0;
+}
+
+.package-price {
+    font-weight: bold;
+    margin-top: 6px;
+}
+
+.price-fixed { color: #16a34a; }
+.price-custom { color: #2563eb; }
+
+.empty {
+    text-align: center;
+    color: #777;
+    margin-top: 40px;
+}
+
+/* ADD BUTTON */
+.add-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #1976ff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="back-btn" onclick="history.back()">←</div>
+    Logistics Packages
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+    <input type="text" id="searchInput" placeholder="Search package...">
+    <select id="typeFilter">
+        <option value="all">All</option>
+        <option value="City">City</option>
+        <option value="Intercity">Intercity</option>
+        <option value="Corporate">Corporate</option>
+        <option value="Special">Special</option>
+    </select>
+</div>
+
+<!-- LIST -->
+<div class="container" id="packageList"></div>
+
+<!-- ADD -->
+<button class="add-btn" onclick="addPackage()">+</button>
+
+<script>
+/* ================= DATA ================= */
+const defaultPackages = [
+    {
+        title: "Express City Delivery",
+        desc: "Same-day delivery within city limits for documents and parcels.",
+        price: "₹499",
+        type: "City"
+    },
+    {
+        title: "Intercity Cargo Transport",
+        desc: "Heavy goods transport between cities with tracking.",
+        price: "₹4,999",
+        type: "Intercity"
+    },
+    {
+        title: "Warehouse Shifting Service",
+        desc: "Complete warehouse relocation service.",
+        price: "₹25,000",
+        type: "Intercity"
+    },
+    {
+        title: "Corporate Fleet Contract",
+        desc: "Monthly fleet services with dedicated vehicles.",
+        price: "Custom",
+        type: "Corporate"
+    },
+    {
+        title: "Cold Storage Transport",
+        desc: "Refrigerated transport for food and pharma.",
+        price: "₹8,999",
+        type: "Special"
+    },
+    {
+        title: "E-Commerce Delivery Fleet",
+        desc: "Last-mile delivery vehicles for e-commerce partners.",
+        price: "Contract",
+        type: "Corporate"
+    }
+];
+
+let packages = JSON.parse(localStorage.getItem("logistics_packages")) || defaultPackages;
+save();
+
+/* ================= SAVE ================= */
+function save() {
+    localStorage.setItem("logistics_packages", JSON.stringify(packages));
+}
+
+/* ================= RENDER ================= */
+function render(list) {
+    const container = document.getElementById("packageList");
+    container.innerHTML = "";
+
+    if (!list.length) {
+        container.innerHTML = `<div class="empty">No packages found</div>`;
+        return;
+    }
+
+    list.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "package-card";
+
+        const priceClass =
+            p.price.includes("₹") ? "price-fixed" : "price-custom";
+
+        card.innerHTML = `
+            <div class="package-title">${p.title}</div>
+            <div class="package-desc">${p.desc}</div>
+            <div class="package-price ${priceClass}">
+                ${p.price === "Custom" || p.price === "Contract"
+                    ? p.price + " Pricing"
+                    : "Starting " + p.price}
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+/* ================= FILTER + SEARCH ================= */
+function applyFilters() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const type = document.getElementById("typeFilter").value;
+
+    let filtered = packages.filter(p =>
+        p.title.toLowerCase().includes(search)
+    );
+
+    if (type !== "all") {
+        filtered = filtered.filter(p => p.type === type);
+    }
+
+    render(filtered);
+}
+
+/* ================= ADD PACKAGE ================= */
+function addPackage() {
+    const title = prompt("Package title?");
+    if (!title) return;
+
+    const desc = prompt("Package description?");
+    const price = prompt("Price (₹999 / Custom / Contract)", "Custom");
+    const type = prompt("Type (City / Intercity / Corporate / Special)", "City");
+
+    packages.unshift({ title, desc, price, type });
+    save();
+    applyFilters();
+}
+
+/* ================= EVENTS ================= */
+document.getElementById("searchInput").addEventListener("input", applyFilters);
+document.getElementById("typeFilter").addEventListener("change", applyFilters);
+
+/* ================= INIT ================= */
+render(packages);
+</script>
+</body>
+</html>

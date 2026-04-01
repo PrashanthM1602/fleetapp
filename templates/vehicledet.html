@@ -1,0 +1,215 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehicle Information</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+    background: #f4f6f9;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+
+  /* Sidebar */
+  .nav-section {
+    background: #fff;
+    min-height: 100vh;
+    border-right: 1px solid #e0e0e0;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .nav-section .text-center img {
+    border: 4px solid #007bff;
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+  }
+
+  .nav-section .text-center img:hover {
+    transform: scale(1.05);
+  }
+
+  .nav-section h5 {
+    font-weight: 600;
+    margin-top: 12px;
+    font-size: 1.1rem;
+    color: #222;
+  }
+
+  /* Cards */
+  .card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .card-header {
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 12px 16px;
+    letter-spacing: 0.3px;
+  }
+
+  /* Tables */
+  .table {
+    margin: 0;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .table th {
+    width: 25%;
+    background: #f1f5f9;
+    font-weight: 600;
+    color: #444;
+    text-transform: capitalize;
+  }
+
+  .table td {
+    background: #fff;
+    vertical-align: middle;
+  }
+
+  /* Vehicle Images */
+  .vehicle-photo {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+  }
+
+  .vehicle-photo:hover {
+    transform: scale(1.04);
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 768px) {
+    .nav-section {
+      min-height: auto;
+      border-right: none;
+      box-shadow: none;
+    }
+    .col-md-3 {
+      margin-bottom: 20px;
+    }
+  }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid mt-3">
+  <div class="row">
+    <!-- Sidebar Navigation -->
+    <div class="col-md-3 nav-section">
+      <div class="text-center p-3">
+        {% if vehicle.image1 %}
+           <img src="{{ vehicle.image1.url }}" alt="Vehicle Image" class="img-fluid rounded-circle" width="150">
+              {% else %}
+             <img src="{% static 'images/default-vehicle.png' %}" alt="Default Vehicle" class="img-fluid rounded-circle" width="150">
+              {% endif %}
+        <h5 class="mt-2">{{ vehicle.vehicle_name }} - ({{ vehicle.vehicle_type }})</h5>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9">
+
+      <!-- Step 1: Basic Details -->
+      <div class="card mb-3">
+        <div class="card-header">Basic Details</div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <tr><th>Vehicle Type</th><td>{{ vehicle.vehicle_type }}</td><th>Vehicle Name</th><td>{{ vehicle.vehicle_name }}</td></tr>
+            <tr><th>Plate No</th><td>{{ vehicle.plate_number }}</td><th>Fuel Type</th><td>{{ vehicle.fuel_type }}</td></tr>
+            <tr><th>Make</th><td>{{ vehicle.make }}</td><th>Make Year</th><td>{{ vehicle.make_year }}</td></tr>
+            <tr><th>Year of Manufacture</th><td>{{ vehicle.manufacture_year}}</td><th>Engine No</th><td>{{ vehicle.engine_no }}</td></tr>
+            <tr><th>Chassis No</th><td>{{ vehicle.chassis_no }}</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Step 2: Advance Details -->
+      <div class="card mb-3">
+        <div class="card-header">Advance Details</div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <tr><th>Ownership</th><td>{{ vehicle.ownership }}</td><th>Location</th><td>{{ vehicle.location }}</td></tr>
+            <tr><th>Brand</th><td>{{ vehicle.brand }}</td><th>Model</th><td>{{ vehicle.model_adv}}</td></tr>
+            <tr><th>Tyre Size</th><td>{{ vehicle.tyre_size }}</td><th>Tons</th><td>{{ vehicle.tons }}</td></tr>
+            <tr><th>Odometer Reading</th><td>{{ vehicle.odometer}}</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Step 3: Reminder Dates -->
+      <div class="card mb-3">
+        <div class="card-header">Reminder Dates</div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <tr><th>Insurance No</th><td>{{ vehicle.insurance_no }}</td><th>Insurance Start Date</th><td>{{ vehicle.insurance_start}}</td></tr>
+            <tr><th>Insurance Expiry Date</th><td>{{ vehicle.insurance_expiry}}</td><th>Road Tax Last Date</th><td>{{ vehicle.road_tax_last}}</td></tr>
+            <tr><th>Permit Last Date</th><td>{{ vehicle.permit_last}}</td><th>PUC Last Date</th><td>{{ vehicle.puc_last}}</td></tr>
+            <tr><th>Registration Valid From</th><td>{{ vehicle.reg_from }}</td><th>Registration Valid To</th><td>{{ vehicle.reg_to }}</td></tr>
+            <tr><th>Fitness Certificate End Date</th><td>{{ vehicle.fitness_end }}</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Step 4: Images -->
+      <div class="card mb-3">
+          <div class="card-header">Images</div>
+          <div class="card-body row">
+            {% if vehicle.image1 %}
+              <div class="col-md-3 mb-3">
+                <img src="{{ vehicle.image1.url }}" class="vehicle-photo">
+              </div>
+            {% endif %}
+            {% if vehicle.image2 %}
+              <div class="col-md-3 mb-3">
+                <img src="{{ vehicle.image2.url }}" class="vehicle-photo">
+              </div>
+            {% endif %}
+            {% if vehicle.image3 %}
+              <div class="col-md-3 mb-3">
+                <img src="{{ vehicle.image3.url }}" class="vehicle-photo">
+              </div>
+            {% endif %}
+            {% if vehicle.image4 %}
+              <div class="col-md-3 mb-3">
+                <img src="{{ vehicle.image4.url }}" class="vehicle-photo">
+                      </div>
+            {% endif %}
+
+            {% if not vehicle.image1 and not vehicle.image2 and not vehicle.image3 and not vehicle.image4 %}
+              <p>No images available</p>
+            {% endif %}
+          </div>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+

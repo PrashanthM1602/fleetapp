@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manage Vehicle</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+
+    body {
+      background-color: #f8f9fc;
+    }
+    .table th, .table td {
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .action-btn {
+      background-color: #003cff;
+      color: white;
+      border: none;
+      padding: 4px 10px;
+      font-size: 13px;
+      border-radius: 4px;
+    }
+    .page-title {
+      font-weight: 600;
+      font-size: 20px;
+      padding: 15px 0;
+    }
+    .btn-add {
+      background-color: #003cff;
+      color: white;
+      margin-bottom: 10px;
+    }
+    .img-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+      body {
+      background-color: #f8f9fa;
+    }
+
+    .wizard-nav {
+      display: flex;
+      padding-left: 0;
+      list-style: none;
+      margin-bottom: 0;
+    }
+
+    body::before,
+body::after {
+    display: none; /* Removing abstract blurred blobs for a cleaner layout */
+}
+
+
+
+        .navbar {
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-right: 50px;
+        }
+        .navbar-brand span.v {
+            color: #ff9800;
+        }
+        .navbar-brand span.track360 {
+            color: rgba(229, 150, 65, 0.935);
+        }
+
+        /* Dashboard Button */
+        .dashboard-btn {
+            background: linear-gradient(45deg, #4CAF50, #2E8B57);
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(46, 139, 87, 0.7);
+        }
+        .dashboard-btn:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        }
+        /* Space between nav-items */
+.navbar-nav .nav-item {
+    margin-right: 15px; /* adjust spacing between items */
+    margin-top: 10px;
+}
+
+/* Padding inside nav links */
+.navbar-nav .nav-link {
+    padding: 8px 12px;
+    border-radius: 6px; /* keeps hover effect nice & rounded */
+}
+
+
+        .navbar-nav .nav-item .nav-link:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            border-radius: 10px;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        } 
+        /* Show dropdown on hover */
+  .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    
+    margin-top: 0; /* Remove Bootstrap's small offset */
+    animation: fadeInDown 0.3s ease-in-out;
+    border-radius: 15px;
+    z-index: 1001;
+    position: absolute;
+    
+    
+  }
+
+
+
+
+
+
+
+/* Optional: Add smooth animation */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+        /* Stylish Logout Button */
+        .logout-btn {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 65, 108, 0.7);
+        }
+        .logout-btn:hover {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 65, 108, 1);
+        }
+
+  .dropdown-submenu {
+  position: relative;
+}
+
+/* Hide submenu by default */
+.dropdown-submenu .dropdownn-menu {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%; /* Makes it pop out to the right */
+  margin-top: -5px;
+  min-width: 220px;
+  background-color: #fff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px);
+  transition: all 0.25s ease-in-out;
+  z-index: 1000;
+}
+
+/* Show submenu on hover */
+.dropdown-submenu:hover > .dropdownn-menu {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+/* Dropdown item design */
+.dropdown-submenu .dropdownn-item {
+  display: block;
+  padding: 8px 18px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect */
+.dropdown-submenu .dropdownn-item:hover {
+  background-color: #f8f9fa;
+  color: #0d6efd;
+}
+
+/* Remove any default bullet or circle symbol */
+.dropdown-submenu .dropdownn-item::before {
+  content: "";
+}
+
+/* Right arrow for submenu indicator */
+.dropdown-submenu > a::after {
+  {% comment %} content: "›"; {% endcomment %}
+  float: right;
+  font-size: 0.9rem;
+  opacity: 0.6;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.dropdown-submenu:hover > a::after {
+  transform: translateX(2px);
+  opacity: 1;
+}
+
+.dropdown-menu,
+.dropdownn-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+    /* Page background & container spacing */
+    /* ---------- Modern Clean UI Styles ---------- */
+/* ========== Modern Compact & Clean Design ========== */
+
+/* Card Container */
+.page-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  padding: 28px 34px;
+  transition: all 0.3s ease;
+}
+
+/* Header */
+.page-title {
+  font-weight: 600;
+  font-size: 22px;
+  color: #0f172a;
+}
+
+.page-note {
+  color: #64748b;
+  font-size: 13px;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.manage-link {
+  color: #2563eb;
+  font-weight: 500;
+  text-decoration: none;
+}
+.manage-link:hover {
+  text-decoration: underline;
+}
+
+/* Back Button */
+.btn-back {
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+  transition: all 0.25s ease;
+}
+.btn-back:hover {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #2563eb;
+}
+
+/* Tabs */
+.step-tabs {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.step-tabs .tab {
+  flex: 1;
+  text-align: center;
+  padding: 12px 8px;
+  font-weight: 500;
+  font-size: 13.5px;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+.step-tabs .tab.active {
+  background: #2563eb;
+  color: #fff;
+}
+.step-tabs .tab:hover:not(.active) {
+  background: #e2e8f0;
+}
+.step-tabs .tab small {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  margin-top: 2px;
+  opacity: 0.85;
+}
+
+/* Form sections */
+.form-area {
+  margin-top: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+}
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 14px 18px;
+  border-bottom: 1px solid #f1f5f9;
+}
+.form-row:last-child { border-bottom: none; }
+
+/* Labels */
+.label-col {
+  width: 230px;
+  font-weight: 500;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+.required { color: #ef4444; }
+.help-icon {
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+.help-icon:hover { color: #2563eb; }
+
+/* Compact Inputs */
+.input-col {
+  flex: 1;
+}
+.input-col input[type="text"],
+.input-col input[type="number"],
+.input-col input[type="date"],
+.input-col input[type="file"],
+.input-col select,
+.input-col textarea {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  padding: 6px 10px;
+  font-size: 14px;
+  background: #f9fafb;
+  color: #1e293b;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.input-col input:focus,
+.input-col select:focus,
+.input-col textarea:focus {
+  background: #fff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.12);
+  outline: none;
+}
+
+/* File Upload */
+.upload-card {
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 22px;
+  text-align: center;
+  color: #64748b;
+  background: #fafbfc;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  font-size: 14px;
+}
+.upload-card:hover {
+  border-color: #2563eb;
+  background: #f8fafc;
+  color: #2563eb;
+  transform: translateY(-2px);
+}
+
+/* Navigation Buttons */
+.nav-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 20px;
+  background: #f9fafb;
+  border-top: 1px solid #e2e8f0;
+}
+.btn-prev,
+.btn-next {
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  padding: 8px 18px;
+  font-size: 14px;
+  transition: background 0.25s, transform 0.2s;
+}
+.btn-prev {
+  background: #e2e8f0;
+  color: #334155;
+}
+.btn-prev:hover {
+  background: #cbd5e1;
+  transform: scale(1.02);
+}
+.btn-next {
+  background: #2563eb;
+  color: #fff;
+}
+.btn-next:hover {
+  background: #1d4ed8;
+  transform: scale(1.02);
+}
+
+/* Save / Cancel */
+.btn-save,
+.btn-cancel {
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  padding: 8px 18px;
+  font-size: 14px;
+  margin-top: 14px;
+  transition: 0.25s ease;
+}
+.btn-save {
+  background: #16a34a;
+  color: #fff;
+}
+.btn-save:hover {
+  background: #15803d;
+  transform: scale(1.03);
+}
+.btn-cancel {
+  background: #ef4444;
+  color: #fff;
+}
+.btn-cancel:hover {
+  background: #dc2626;
+  transform: scale(1.03);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .form-row { flex-direction: column; align-items: flex-start; }
+  .label-col { width: 100%; }
+  .nav-buttons { justify-content: space-between; }
+}
+
+</style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <span class="v">V</span><span class="track360">Track360</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                  <li class="nav-item">
+                <a class="nav-link" href="{% url 'dashboard' %}">
+              <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+          </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="garageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-tools"></i> Masters
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="mastersDropdown">
+            <div id="main-content">
+                            <li><a class="dropdown-item" href="{% url 'manageparts' %}"><i class="bi bi-wrench-adjustable-circle"></i> Garage masters</a></li>
+                            <li><a class="dropdown-item" href="{% url 'create' %}"><i class="bi bi-truck-front-fill"></i> Vehicle Ownership</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inspection'%}"><i class="bi bi-compass"></i> Inspection types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'expense'%}"><i class="bi bi-graph-down-arrow"></i> Expense Types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'fueltype' %}"><i class="bi bi-fuel-pump-fill"></i> Fuel Types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'service' %}"><i class="bi bi-person-workspace"></i> Service Types</a></li>
+                        
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toggle" href="#" id="vehiclesDriversDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <i class="bi bi-tools"></i> Garage
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="garageDropdown">
+                           <li><a class="dropdown-item" href="{% url 'inspection_create'%}"><i class="bi bi-plus-square-fill"></i> Create new Incpection</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inspection_list' %}"><i class="bi bi-list"></i> Incpection Requests </a></li>
+                            <li><a class="dropdown-item" href="{% url 'completed_inspection_list'%}"><i class="bi bi-grid-3x3-gap-fill"></i> Completed Inspections </a></li>
+                            <li><a class="dropdown-item" href="{% url  'newquat'%}"><i class="bi bi-plus-circle-fill"></i> Create New Quotation </a></li>
+                            <li><a class="dropdown-item" href="{% url  'quatlist'%}"><i class="bi bi-file-text me-2"></i> All Quotation </a></li>
+                            <li><a class="dropdown-item" href="{% url  'approved_quotations'%}"><i class="bi bi-check-circle"></i> Approved Quotations </a></li>
+                       
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                   
+                         <button class="dashboard-btn"><i class="bi bi-truck"></i> Vehicles & Drivers</button>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="vehiclesDriversDropdown">
+                            <li><a class="dropdown-item" href="{% url 'add_vehicle'%}"><i class="bi bi-plus-square-fill"></i> Add New Vehicle</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_vehicles'%}"><i class="bi bi-truck"></i> Vehicles</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_drivers'%}"><i class="bi bi-person"></i> Drivers</a></li>
+                            <li><a class="dropdown-item" href="{% url 'driver_reviews'%}"><i class="bi bi-star-fill"></i> Driver Reviews</a></li>
+                        
+                    </ul>
+                </li>
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesFuelingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-fuel-pump"></i> Services & Fueling
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="servicesFuelingDropdown">
+                       <li><a class="dropdown-item" href="{% url 'service_create'%}"><i class="bi bi-patch-plus"></i> Create New Service</a></li>
+                            <li><a class="dropdown-item" href="{%url 'service_list'%}"><i class="bi-list-task"></i> All Services</a></li>
+                            <li><a class="dropdown-item" href="{%url 'manage_other_expenses'%}"><i class="bi-files"></i> Other Expenses</a></li>
+                            <li><a class="dropdown-item" href="{%url 'add_fueling'%}"><i class="bi-funnel"></i> New Fueling</a></li>
+                            <li><a class="dropdown-item" href="{%url 'fuel_report_list'%}"><i class="bi bi-list-ul"></i> Fueling Report</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_tyre'%}"><i class="bi-arrow-repeat"></i> Tyre Replacement</a></li>
+                        
+                    </ul>
+                </li>
+                
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-file-earmark-bar-graph"></i> Reports
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
+                            <li><a class="dropdown-item" href="{% url 'typewise'%}"><i class="bi-car-front-fill"></i> Servive Type Wise</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manageitems'%}"><i class="bi bi-box-seam-fill"></i> Parts Wise</a></li>
+                            <li><a class="dropdown-item" href="{% url 'purchase_list' %}"><i class="bi bi-cart-check-fill"></i> Purchase List</a></li>
+                            <li><a class="dropdown-item" href="{%url 'fuel_report_list'%}"><i class="bi-pie-chart"></i> Fueling Report</a></li>
+                             
+                               <li class="dropdown-submenu">
+                                  <a class="dropdownn-item dropdown-toggle" href="#">
+                                    <i class="bi bi-bell"></i> Vehicle Reminders
+                                  </a>
+                                  <ul class="dropdownn-menu">
+                                    <li><a class="dropdownn-item" href="{% url 'manage_insurances' %}">Vehicle Insurance</a></li>
+                                    <li><a class="dropdownn-item" href="{% url 'manage_registrations' %}">Vehicle Registration</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_roadtax'%}">Road Tax</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_permit'%}">Vehicle Permit</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_puc'%}">Vehicle PUC</a></li>
+                                    
+                                    <li><a class="dropdownn-item" href="{%url 'manage_fitness'%}">Fitness Certificate</a></li>
+                                    
+                                    
+                                  </ul>
+                                </li>
+                            <li><a class="dropdown-item" href="#"><i class="bi-person-fill"></i>Drive Reminders</a></li>
+                            
+                        </ul>
+                </li>
+            </ul>
+            <button class="logout-btn">Logout</button>
+        </div>
+    </div>
+  </nav>
+  {% comment %} <div class="container"> {% endcomment %}
+   <div class="page-card">
+
+      <!-- Top header -->
+      <div class="top-row d-flex justify-content-between align-items-start">
+        <div>
+          <h3 class="page-title">Manage Vehicle</h3>
+          <div class="page-note">
+            <strong>Note:</strong> Once you add a vehicle, you can then add multiple relevant documents.
+          </div>
+        </div>
+        <div>
+          <a class="manage-link" href="#">Manage Vehicle</a>
+        </div>
+      </div>
+
+      <!-- Form card with Back + tabs -->
+      <div class="mt-3 form-area">
+        <div class="d-flex justify-content-between align-items-center p-3">
+          <!-- Back button -->
+          <div>
+            <button id="btnBack" class="btn-back">
+              <i class="bi bi-arrow-left-short"></i> Back
+            </button>
+          </div>
+
+          <!-- Step tabs -->
+          <div class="flex-grow-1 d-flex justify-content-end">
+            <div class="step-tabs" style="width:760px; max-width:calc(100% - 20px);">
+              <div class="tab active" data-step="1">
+                <span>Basic</span><small>Vehicle Basic Details</small>
+              </div>
+              <div class="tab" data-step="2">
+                <span>Advance</span><small>Vehicle Advance Details</small>
+              </div>
+              <div class="tab" data-step="3">
+                <span>Reminder Dates</span><small>Vehicle Dates Details</small>
+              </div>
+              <div class="tab" data-step="4">
+                <span>Images</span><small>Vehicle Images</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <form method="POST" enctype="multipart/form-data" id="vehicleForm">
+          {% csrf_token %}
+
+          <!-- STEP 1: Basic Details -->
+          <div class="step-content" data-step="1">
+            <div class="form-row">
+              <div class="label-col">Vehicle Type</div>
+              <div class="input-col">{{ form.vehicle_type }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Vehicle Name</div>
+              <div class="input-col">{{ form.vehicle_name }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Plate Number</div>
+              <div class="input-col">{{ form.plate_number }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Fuel Type</div>
+              <div class="input-col">{{ form.fuel_type }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Make</div>
+              <div class="input-col">{{ form.make }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Make Year</div>
+              <div class="input-col">{{ form.make_year }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Manufacture Year</div>
+              <div class="input-col">{{ form.manufacture_year }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Engine No</div>
+              <div class="input-col">{{ form.engine_no }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Chassis No</div>
+              <div class="input-col">{{ form.chassis_no }}</div>
+            </div>
+          </div>
+
+          <!-- STEP 2: Advance Details -->
+          <div class="step-content d-none" data-step="2">
+            <div class="form-row">
+              <div class="label-col">Ownership</div>
+              <div class="input-col">{{ form.ownership }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Location</div>
+              <div class="input-col">{{ form.location }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Brand</div>
+              <div class="input-col">{{ form.brand }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Model</div>
+              <div class="input-col">{{ form.model_adv }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Tyre Size</div>
+              <div class="input-col">{{ form.tyre_size }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Tons</div>
+              <div class="input-col">{{ form.tons }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Odometer</div>
+              <div class="input-col">{{ form.odometer }}</div>
+            </div>
+          </div>
+
+          <!-- STEP 3: Reminder Dates -->
+          <div class="step-content d-none" data-step="3">
+            <div class="form-row">
+              <div class="label-col">Insurance No <i class="bi bi-question-circle-fill help-icon" title="Insurance policy number"></i></div>
+              <div class="input-col">{{ form.insurance_no }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Insurance Start Date <i class="bi bi-question-circle-fill help-icon" title="Insurance start"></i></div>
+              <div class="input-col">{{ form.insurance_start }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Insurance Expiry Date <i class="bi bi-question-circle-fill help-icon" title="Insurance expiry"></i></div>
+              <div class="input-col">{{ form.insurance_expiry }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">RoadTax Last Date <i class="bi bi-question-circle-fill help-icon" title="Road tax expiry"></i></div>
+              <div class="input-col">{{ form.roadtax_last }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Permit Last Date <i class="bi bi-question-circle-fill help-icon" title="Permit expiry"></i></div>
+              <div class="input-col">{{ form.permit_last }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">PUC Last Date <i class="bi bi-question-circle-fill help-icon" title="PUC expiry"></i></div>
+              <div class="input-col">{{ form.puc_last }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Registration Valid From <i class="bi bi-question-circle-fill help-icon" title="Registration from"></i></div>
+              <div class="input-col">{{ form.reg_from }}</div>
+            </div>
+            <div class="form-row">
+              <div class="label-col">Registration Valid To <i class="bi bi-question-circle-fill help-icon" title="Registration to"></i></div>
+              <div class="input-col">{{ form.reg_to }}</div>
+            </div>
+            <div class="form-row mb-0">
+              <div class="label-col">Fitness Certificate End Date <i class="bi bi-question-circle-fill help-icon" title="Fitness expiry"></i></div>
+              <div class="input-col">{{ form.fitness_end }}</div>
+            </div>
+          </div>
+
+          <!-- STEP 4: Vehicle Images -->
+          <div class="step-content d-none" data-step="4">
+            <div class="upload-grid">
+              <div class="row g-3">
+                {% for i in "1234" %}
+                  <div class="col-md-6">
+                    <label class="form-label">
+                      Upload Image-{{ i }}
+                      {% if i == "1" %}<i class="bi bi-question-circle-fill help-icon" title="Front view"></i>{% endif %}
+                      {% if i == "2" %}<i class="bi bi-question-circle-fill help-icon" title="Side view"></i>{% endif %}
+                      {% if i == "3" %}<i class="bi bi-question-circle-fill help-icon" title="Rear view"></i>{% endif %}
+                      {% if i == "4" %}<i class="bi bi-question-circle-fill help-icon" title="Document photo"></i>{% endif %}
+                    </label>
+                    <div class="input-col">
+                      {% if i == "1" %}{{ form.image1 }}{% endif %}
+                      {% if i == "2" %}{{ form.image2 }}{% endif %}
+                      {% if i == "3" %}{{ form.image3 }}{% endif %}
+                      {% if i == "4" %}{{ form.image4 }}{% endif %}
+                    </div>
+                    {% if i == "1" and form.instance.image1 %}
+                      <img src="{{ form.instance.image1.url }}" class="img-thumbnail mt-2" style="max-height:150px;">
+                    {% endif %}
+                    {% if i == "2" and form.instance.image2 %}
+                      <img src="{{ form.instance.image2.url }}" class="img-thumbnail mt-2" style="max-height:150px;">
+                    {% endif %}
+                    {% if i == "3" and form.instance.image3 %}
+                      <img src="{{ form.instance.image3.url }}" class="img-thumbnail mt-2" style="max-height:150px;">
+                    {% endif %}
+                    {% if i == "4" and form.instance.image4 %}
+                      <img src="{{ form.instance.image4.url }}" class="img-thumbnail mt-2" style="max-height:150px;">
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation buttons -->
+          <div class="nav-buttons">
+            <button type="button" id="btnPrev" class="btn btn-prev" style="display:none;">Previous</button>
+            <button type="button" id="btnNext" class="btn btn-next">Next</button>
+          </div>
+
+          <button type="submit" class="btn btn-save" id="saveChanges">
+               <i class="bi bi-save2"></i> Save Changes
+           </button>
+        <button type="button" class="btn btn-cancel" id="cancelBtn">
+          <i class="bi bi-x-circle"></i> Cancel
+        </button>
+        
+        </form>
+      </div>
+
+      <!-- Save / Cancel buttons -->
+      
+      </div>
+
+    </div>
+   </div>
+  
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Step navigation
+    (function(){
+      const tabs = Array.from(document.querySelectorAll('.step-tabs .tab'));
+      const steps = Array.from(document.querySelectorAll('.step-content'));
+      const btnPrev = document.getElementById('btnPrev');
+      const btnNext = document.getElementById('btnNext');
+      const btnBack = document.getElementById('btnBack');
+
+      let current = 0;
+      const total = steps.length;
+
+      function show(i) {
+        // hide all steps
+        steps.forEach(s => {
+          s.classList.add('d-none');
+          s.classList.remove('active');
+        });
+        // remove active tab
+        tabs.forEach(t => t.classList.remove('active'));
+        // show selected
+        steps[i].classList.remove('d-none');
+        steps[i].classList.add('active');
+        tabs[i].classList.add('active');
+
+        // prev visibility
+        btnPrev.style.display = i === 0 ? 'none' : 'inline-block';
+        btnNext.innerText = i === total - 1 ? 'Finish' : 'Next';
+      }
+
+      // initialize
+      show(current);
+
+      // tab click
+      tabs.forEach((t, idx) => {
+        t.addEventListener('click', () => {
+          current = idx;
+          show(current);
+        });
+      });
+
+      // prev/next
+      btnPrev.addEventListener('click', () => {
+        if (current > 0) current--;
+        show(current);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      btnNext.addEventListener('click', () => {
+        if (current < total - 1) {
+          current++;
+          show(current);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          document.getElementById('vehicleForm').submit();
+        }
+      });
+
+      // Back button - you can replace location or logic as needed
+      btnBack.addEventListener('click', () => {
+        window.history.back();
+      });
+
+      // Save / Cancel
+      document.getElementById('cancelBtn').addEventListener('click', () => {
+       if (confirm('Cancel without saving?')) {
+        window.location.href = "{% url 'manage_vehicles' %}"; // redirect back
+        }
+       });
+
+      // Drag & drop / click for upload-card
+      document.querySelectorAll('.upload-card').forEach(card => {
+        const input = card.querySelector('.file-input');
+
+        card.addEventListener('click', () => input.click() );
+
+        // drag events
+        ['dragenter','dragover'].forEach(e => {
+          card.addEventListener(e, (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            card.style.borderColor = '#2ea44f';
+          });
+        });
+        ['dragleave','drop'].forEach(e => {
+          card.addEventListener(e, (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            card.style.borderColor = '';
+          });
+        });
+
+        card.addEventListener('drop', (ev) => {
+          const f = ev.dataTransfer.files && ev.dataTransfer.files[0];
+          if (f) handleFileSelected(f, card);
+        });
+
+        input.addEventListener('change', (ev) => {
+          const f = ev.target.files && ev.target.files[0];
+          if (f) handleFileSelected(f, card);
+        });
+      });
+
+      function handleFileSelected(file, card) {
+        // show preview thumbnail inside box
+        if (!file.type.startsWith('image/')) {
+          alert('Please upload an image file.');
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          card.innerHTML = ''; // replace contents with preview
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '110px';
+          img.style.borderRadius = '4px';
+          img.style.objectFit = 'cover';
+          card.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
+
+    })();
+  </script>
+</body>
+</html>
+
+
+
+
+
+

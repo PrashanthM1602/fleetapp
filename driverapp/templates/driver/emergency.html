@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function () {
+  const settings = JSON.parse(localStorage.getItem("settings"));
+  if (settings?.dark) {
+    document.documentElement.classList.add("dark");
+  }
+})();
+</script>
+<meta charset="UTF-8">
+<title>Emergency Contact</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+    --bg: #f2f2f2;
+    --card: #ffffff;
+    --text: #000000;
+    --sub: #555;
+}
+
+.dark {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #ffffff;
+    --sub: #cbd5f5;
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* HEADER */
+.header {
+    background: #1e3a8a;
+    color: white;
+    padding: 14px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.back-btn {
+    font-size: 22px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* CONTENT */
+.container {
+    padding: 12px;
+}
+
+.title {
+    color: #dc2626;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+/* BUTTONS */
+.emergency-btn {
+    background: #dc2626;
+    color: white;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.emergency-btn.medium { background: #ea580c; }
+.emergency-btn:active { transform: scale(0.97); }
+
+/* HISTORY */
+.history {
+    margin-top: 20px;
+}
+
+.history h3 {
+    margin-bottom: 8px;
+}
+
+.history-item {
+    background: white;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background: white;
+    padding: 16px;
+    width: 90%;
+    max-width: 400px;
+    margin: 25% auto;
+    border-radius: 8px;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+}
+
+.call { background: #16a34a; color: white; }
+.report { background: #2563eb; color: white; }
+.cancel { background: #e5e7eb; }
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="back-btn" onclick="history.back()">←</div>
+    Emergency Contact
+</div>
+
+<div class="container">
+    <div class="title">Select the issue you are facing</div>
+    <div id="emergencyList"></div>
+
+    <div class="history">
+        <h3>Recent Emergencies</h3>
+        <div id="historyList"></div>
+    </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <div id="modalText"></div>
+        <button class="call" onclick="callEmergency()">📞 Call Emergency</button>
+        <button class="report" onclick="confirmReport()">📤 Report Issue</button>
+        <button class="cancel" onclick="closeModal()">Cancel</button>
+    </div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const emergencyTypes = [
+    { name: "Brake Failure", priority: "High" },
+    { name: "Accident", priority: "High" },
+    { name: "Engine Overheating", priority: "High" },
+    { name: "Defective Tyre", priority: "Medium" },
+    { name: "Starter Failure", priority: "Medium" },
+    { name: "Other Issues", priority: "Medium" }
+];
+
+let selectedIssue = null;
+let history = JSON.parse(localStorage.getItem("emergency_history")) || [];
+
+/* ================= RENDER EMERGENCY LIST ================= */
+function renderEmergencies() {
+    const list = document.getElementById("emergencyList");
+    list.innerHTML = "";
+
+    emergencyTypes.forEach(e => {
+        const btn = document.createElement("div");
+        btn.className = `emergency-btn ${e.priority === "Medium" ? "medium" : ""}`;
+        btn.innerHTML = `
+            <span>${e.name}</span>
+            <small>${e.priority}</small>
+        `;
+        btn.onclick = () => openModal(e.name);
+        list.appendChild(btn);
+    });
+}
+
+/* ================= MODAL ================= */
+function openModal(issue) {
+    selectedIssue = issue;
+    document.getElementById("modalText").innerHTML =
+        `<strong>Emergency:</strong> ${issue}<br><br>Choose action`;
+    modal.style.display = "block";
+}
+
+function closeModal() {
+    modal.style.display = "none";
+}
+
+/* ================= ACTIONS ================= */
+function callEmergency() {
+    window.location.href = "tel:112";
+}
+
+function confirmReport() {
+    if (!navigator.geolocation) {
+        saveReport("Location not supported");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(pos => {
+        const loc = `Lat:${pos.coords.latitude}, Lng:${pos.coords.longitude}`;
+        saveReport(loc);
+    }, () => {
+        saveReport("Location unavailable");
+    });
+}
+
+function saveReport(location) {
+    const record = {
+        issue: selectedIssue,
+        time: new Date().toLocaleString(),
+        location
+    };
+
+    history.unshift(record);
+    history = history.slice(0, 5); // keep last 5
+    localStorage.setItem("emergency_history", JSON.stringify(history));
+
+    closeModal();
+    renderHistory();
+    alert("Emergency reported successfully");
+}
+
+/* ================= HISTORY ================= */
+function renderHistory() {
+    const list = document.getElementById("historyList");
+    list.innerHTML = history.length
+        ? history.map(h =>
+            `<div class="history-item">
+                <strong>${h.issue}</strong><br>
+                ${h.time}<br>
+                ${h.location}
+            </div>`).join("")
+        : "<p>No recent emergencies</p>";
+}
+
+/* ================= INIT ================= */
+renderEmergencies();
+renderHistory();
+</script>
+
+</body>
+</html>

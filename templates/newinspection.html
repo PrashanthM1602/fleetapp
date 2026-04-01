@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Inspection Request</title>
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <style>
+    
+
+    body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6f9; /* Light grey-blue background for a professional touch */
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    background-attachment: fixed;
+    color: #333;
+    
+}
+
+/* Optional: subtle gradient or just a solid background */
+body::before,
+body::after {
+    display: none; /* Removing abstract blurred blobs for a cleaner layout */
+}
+
+
+
+        .navbar {
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-right: 50px;
+        }
+        .navbar-brand span.v {
+            color: #ff9800;
+        }
+        .navbar-brand span.track360 {
+            color: rgba(229, 150, 65, 0.935);
+        }
+
+        /* Dashboard Button */
+        .dashboard-btn {
+            background: linear-gradient(45deg, #4CAF50, #2E8B57);
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(46, 139, 87, 0.7);
+        }
+        .dashboard-btn:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        }
+        /* Space between nav-items */
+.navbar-nav .nav-item {
+    margin-right: 15px; /* adjust spacing between items */
+    margin-top: 10px;
+}
+
+/* Padding inside nav links */
+.navbar-nav .nav-link {
+    padding: 8px 12px;
+    border-radius: 6px; /* keeps hover effect nice & rounded */
+}
+
+
+        .navbar-nav .nav-item .nav-link:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            border-radius: 10px;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        } 
+        /* Show dropdown on hover */
+  .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    
+    margin-top: 0; /* Remove Bootstrap's small offset */
+    animation: fadeInDown 0.3s ease-in-out;
+    border-radius: 15px;
+    z-index: 1001;
+    position: absolute;
+    
+    
+  }
+
+
+
+
+
+
+
+/* Optional: Add smooth animation */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+        /* Stylish Logout Button */
+        .logout-btn {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 65, 108, 0.7);
+        }
+        .logout-btn:hover {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 65, 108, 1);
+        }
+
+    .container {
+      max-width: 1400px;
+      margin-top: 45px;
+      background: #fff;
+      border-radius: 8px;
+      padding: 25px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e5e5e5;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    .header h2 {
+      margin: 0;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    select, input[type="text"] {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .quill-wrapper {
+      margin-top: 25px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      gap: 15px;
+    }
+
+    .buttons button {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+    }
+
+    .btn-save {
+      background-color: #0033cc;
+    }
+
+    .btn-cancel {
+      background-color: #cc0000;
+    }
+
+    .btn-back {
+      background-color: #dc3545;
+      margin-bottom: 20px;
+      color: white;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <span class="v">V</span><span class="track360">Track360</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                  <a class="nav-link dropdown-toggle" href="vms.html" id="garageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                   <i class="bi bi-speedometer2"></i> Dashboard
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="garageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-tools"></i> Masters
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="mastersDropdown">
+            <div id="main-content">
+                        <li><a class="dropdown-item" href="manage parts.html"><i class="bi bi-wrench-adjustable-circle"></i> Garage masters</a></li>
+                        <li><a class="dropdown-item" href="vehiclemaster.html"><i class="bi bi-truck-front-fill"></i> Vehicle Ownership</a></li>
+                        <li><a class="dropdown-item" href="incpection.html"><i class="bi bi-compass"></i> Inception types</a></li>
+                        <li><a class="dropdown-item" href="expensestypes.html"><i class="bi bi-graph-down-arrow"></i> Expense Types</a></li>
+                        <li><a class="dropdown-item" href="fuel.html"><i class="bi bi-fuel-pump-fill"></i> Fuel Types</a></li>
+                        <li><a class="dropdown-item" href="servicetype.html"><i class="bi bi-person-workspace"></i> Service Types</a></li>
+                        
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    
+                      <button class="dashboard-btn"><i class="bi bi-tools"></i> Garage</button>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="garageDropdown">
+                        <li><a class="dropdown-item" href="newinspection2.html"><i class="bi bi-plus-square-fill"></i> Create new Incpection</a></li>
+                        <li><a class="dropdown-item" href="inspectionreq.html"><i class="bi bi-list"></i> Incpection Requests </a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-grid-3x3-gap-fill"></i> Completed Inspections </a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-plus-circle-fill"></i> Create New Quotation </a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-file-text me-2"></i> All Quotation </a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-check-circle"></i> Approved Quotations </a></li>
+                       
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="vehiclesDriversDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-truck"></i> Vehicles & Drivers
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="vehiclesDriversDropdown">
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-plus-square-fill"></i> Add New Vehicle</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-truck"></i> Vehicles</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Drivers</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-star-fill"></i> Driver Reviews</a></li>
+                        
+                    </ul>
+                </li>
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesFuelingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-fuel-pump"></i> Services & Fueling
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="servicesFuelingDropdown">
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-patch-plus"></i> Create New Service</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi-list-task"></i> All Services</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi-files"></i> Other Expenses</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi-funnel"></i> New Fueling</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-list-ul"></i> Fueling Report</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi-pie-chart"></i> KM.& Avg.Report</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi-arrow-repeat"></i> Tyre Replacement</a></li>
+                        
+                    </ul>
+                </li>
+                
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-file-earmark-bar-graph"></i> Reports
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
+                        <li><a class="dropdown-item" href="#"><i class="bi-car-front-fill"></i> Servive Type Wise</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-box-seam-fill"></i> Parts Wise</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi-graph-up"></i> Parts Stock</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi-hand-thumbs-down"></i> Parts Low Stock</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi-pie-chart"></i> Fueling Report</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi-bell"></i> Vehicle Reminders</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi-person-fill"></i>Drive Reminders</a></li>
+                        
+                    </ul>
+                </li>
+            </ul>
+            <button class="logout-btn">Logout</button>
+        </div>
+    </div>
+</nav>
+
+  <div class="container">
+    <button class="btn-back">← Back</button>
+
+    <div class="header">
+      <h2>Create Inspection Request</h2>
+      <button style="background: none; border: none; color: orange; font-weight: bold; font-size: 14px;">Create Inspection Request</button>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Inspection Title *</label>
+        <input type="text" placeholder="Enter Inspection Title">
+      </div>
+      <div class="form-group">
+        <label>Inspection Manager *</label>
+        <select>
+          
+          <option>Select Manager</option>
+          <option>John Smith</option>
+          <option>Aisha Khan</option>
+          <option>Carlos Ramirez</option>
+          <option>Emily Zhang</option>
+          <option>David Osei</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Select Inspection Type *</label>
+        <select>
+          <option>Select Inspection Type</option>
+          <option>Pre-Purchase Inspection</option>
+          <option>Safety Inspection</option>
+          <option>Emmisions Inspection</option>
+          <option>Pre/post-Trip Inspection</option>
+          <option>Fleet Inspection</option>
+          <option>Tire Inspection</option>
+          <option>Brake Inspection</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Inspection Status *</label>
+        <select>
+          <option>Select Status</option>
+          <option>Pending</option>
+          <option>Completed</option>
+          <option>Rejected</option>
+          <option>Reinspection Required</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Select Vehicle *</label>
+        <select>
+          <option>Select Vehicle</option>
+          <option>Ford Transit - AB123CD</option>
+          <option>Toyota Hiace - XY456ZT</option>
+          <option>Mercedes Sprinter - EF789GH</option>
+          <option>Isuzu NPR - LM012UV</option>
+          <option>Tata Ace - QR345WX</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group quill-wrapper">
+      <label>Description</label>
+      <div id="editor-container" style="height: 200px;"></div>
+    </div>
+
+    <div class="buttons">
+      <button class="btn-save">💾 Save Changes</button>
+      <button class="btn-cancel">❌ Cancel</button>
+    </div>
+  </div>
+
+  <!-- Include Quill JS -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script>
+    const quill = new Quill('#editor-container', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline'],
+          [{ 'align': [] }],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'header': [1, 2, 3, false] }],
+          ['link', 'image', 'video'],
+          ['code-block'],
+          ['clean']
+        ]
+      }
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load pwa %}
+    {% progressive_web_app_meta %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Login</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .login-box {
+            max-width: 420px;
+            margin: auto;
+            background: #ffffff;
+            padding: 35px 30px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 40px 12px 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #2a5298;
+            box-shadow: 0 0 6px rgba(42,82,152,0.3);
+            outline: none;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 13px;
+            color: #888;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #2a5298, #1e3c72);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .error {
+            color: #ff4d4d;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .footer-text {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 25px 20px;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="login-box">
+
+        <div class="logo">VTrack360</div>
+        <h2>Driver Login</h2>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST" action="{% url 'driver_login' %}">
+            {% csrf_token %}
+
+            <!-- Driver Code -->
+            <div class="input-group">
+                <input type="text" name="driver_code" placeholder="Driver ID" required>
+            </div>
+
+            <!-- Password -->
+            <div class="input-group">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <span class="toggle-password" onclick="togglePassword()">Show</span>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="footer-text">
+            Secure Fleet Management System
+        </div>
+
+    </div>
+</div>
+
+<script>
+function togglePassword() {
+    const passwordInput = document.getElementById("password");
+    const toggle = document.querySelector(".toggle-password");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggle.innerText = "Hide";
+    } else {
+        passwordInput.type = "password";
+        toggle.innerText = "Show";
+    }
+}
+</script>
+
+</body>
+</html>

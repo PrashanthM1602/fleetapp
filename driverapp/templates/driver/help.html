@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<script>
+(function () {
+  const settings = JSON.parse(localStorage.getItem("settings"));
+  if (settings?.dark) {
+    document.documentElement.classList.add("dark");
+  }
+})();
+</script>
+
+<title>Help & Support</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ================= THEME ================= */
+:root {
+    --bg: #f2f2f2;
+    --card: #ffffff;
+    --text: #000000;
+    --sub: #555;
+    --primary: #1976ff;
+}
+
+.dark {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #ffffff;
+    --sub: #cbd5f5;
+}
+
+/* BASE */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* HEADER */
+.header {
+    background: var(--primary);
+    color: white;
+    padding: 14px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.back-btn {
+    font-size: 22px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* CONTENT */
+.container {
+    padding: 12px;
+}
+
+/* SEARCH */
+.search-box {
+    margin-bottom: 12px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* Dark input fix */
+.dark .search-box input {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid #475569;
+}
+
+/* FAQ */
+.faq-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.faq-question {
+    font-weight: bold;
+}
+
+.faq-answer {
+    font-size: 14px;
+    color: var(--sub);
+    margin-top: 8px;
+    display: none;
+}
+
+/* CONTACT */
+.contact-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 16px;
+}
+
+.contact-item {
+    margin-bottom: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="back-btn" onclick="history.back()">←</div>
+    Help & Support
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+    <!-- SEARCH -->
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search help topics...">
+    </div>
+
+    <!-- FAQ LIST -->
+    <div id="faqList"></div>
+
+    <!-- CONTACT -->
+    <div class="contact-card">
+        <div class="contact-item" onclick="call('+919876543210')">📞 Support: +91 98765 43210</div>
+        <div class="contact-item" onclick="email('support@logisticapp.com')">📧 Email: support@logisticapp.com</div>
+        <div class="contact-item" onclick="call('112')">🚨 Emergency Helpline: 112</div>
+    </div>
+
+</div>
+
+<script>
+/* ================= FAQ DATA ================= */
+const faqs = [
+    { question: "How do I accept a trip?", answer: "Turn ON duty from the dashboard and accept the trip popup." },
+    { question: "How do I report an emergency?", answer: "Open Emergency Contacts from the menu and select the issue." },
+    { question: "How do I update my profile?", answer: "Go to Settings and update your profile details." },
+    { question: "Why am I not receiving trips?", answer: "Ensure duty is ON, GPS is enabled, and internet is active." },
+    { question: "How do I enable dark mode?", answer: "Go to Settings → Dark Mode and enable the toggle." }
+];
+
+/* ================= RENDER FAQ ================= */
+function renderFAQs(list) {
+    const faqList = document.getElementById("faqList");
+    faqList.innerHTML = "";
+
+    if (!list.length) {
+        faqList.innerHTML = "<p>No results found</p>";
+        return;
+    }
+
+    list.forEach(faq => {
+        const card = document.createElement("div");
+        card.className = "faq-card";
+
+        card.innerHTML = `
+            <div class="faq-question">${faq.question}</div>
+            <div class="faq-answer">${faq.answer}</div>
+        `;
+
+        card.onclick = () => {
+            const answer = card.querySelector(".faq-answer");
+            answer.style.display =
+                answer.style.display === "block" ? "none" : "block";
+        };
+
+        faqList.appendChild(card);
+    });
+}
+
+/* SEARCH */
+searchInput.addEventListener("input", () => {
+    const value = searchInput.value.toLowerCase();
+    const filtered = faqs.filter(f =>
+        f.question.toLowerCase().includes(value) ||
+        f.answer.toLowerCase().includes(value)
+    );
+    renderFAQs(filtered);
+});
+
+/* CONTACT */
+function call(number) {
+    window.location.href = `tel:${number}`;
+}
+
+function email(address) {
+    window.location.href = `mailto:${address}`;
+}
+
+/* INIT */
+renderFAQs(faqs);
+</script>
+
+</body>
+</html>

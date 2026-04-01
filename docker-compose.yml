@@ -1,0 +1,27 @@
+services:
+  web:
+    build: .
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn fleet.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - .:/app
+      - media_data:/app/media   # ✅ media persistence
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: fleetdb
+      POSTGRES_USER: fleetuser
+      POSTGRES_PASSWORD: fleetpass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+  media_data:

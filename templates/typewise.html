@@ -1,0 +1,801 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Service Type Wise Report</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+
+  body{
+     background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+     .table th, .table td {
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .action-btn {
+      background-color: #003cff;
+      color: white;
+      border: none;
+      padding: 4px 10px;
+      font-size: 13px;
+      border-radius: 4px;
+    }
+    .page-title {
+      font-weight: 600;
+      font-size: 20px;
+      padding: 15px 0;
+    }
+    .btn-add {
+      background-color: #003cff;
+      color: white;
+      margin-bottom: 10px;
+    }
+    .img-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+      body {
+      background-color: #f8f9fa;
+    }
+
+    .wizard-nav {
+      display: flex;
+      padding-left: 0;
+      list-style: none;
+      margin-bottom: 0;
+    }
+
+    body::before,
+body::after {
+    display: none; /* Removing abstract blurred blobs for a cleaner layout */
+}
+
+
+
+        .navbar {
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-right: 50px;
+        }
+        .navbar-brand span.v {
+            color: #ff9800;
+        }
+        .navbar-brand span.track360 {
+            color: rgba(229, 150, 65, 0.935);
+        }
+
+        /* Dashboard Button */
+        .dashboard-btn {
+            background: linear-gradient(45deg, #4CAF50, #2E8B57);
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(46, 139, 87, 0.7);
+        }
+        .dashboard-btn:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        }
+        /* Space between nav-items */
+.navbar-nav .nav-item {
+    margin-right: 15px; /* adjust spacing between items */
+    margin-top: 10px;
+}
+
+/* Padding inside nav links */
+.navbar-nav .nav-link {
+    padding: 8px 12px;
+    border-radius: 6px; /* keeps hover effect nice & rounded */
+}
+
+
+        .navbar-nav .nav-item .nav-link:hover {
+            background: linear-gradient(45deg, #2E8B57, #4CAF50);
+            border-radius: 10px;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(46, 139, 87, 1);
+        } 
+        /* Show dropdown on hover */
+  .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    
+    margin-top: 0; /* Remove Bootstrap's small offset */
+    animation: fadeInDown 0.3s ease-in-out;
+    border-radius: 15px;
+    z-index: 1001;
+    position: absolute;
+    
+    
+  }
+
+
+
+
+
+
+
+/* Optional: Add smooth animation */
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+        /* Stylish Logout Button */
+        .logout-btn {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 65, 108, 0.7);
+        }
+        .logout-btn:hover {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 65, 108, 1);
+        }
+
+        .dropdown-submenu {
+  position: relative;
+}
+
+/* Hide submenu by default */
+.dropdown-submenu .dropdownn-menu {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%; /* Makes it pop out to the right */
+  margin-top: -5px;
+  min-width: 220px;
+  background-color: #fff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px);
+  transition: all 0.25s ease-in-out;
+  z-index: 1000;
+}
+
+/* Show submenu on hover */
+.dropdown-submenu:hover > .dropdownn-menu {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+/* Dropdown item design */
+.dropdown-submenu .dropdownn-item {
+  display: block;
+  padding: 8px 18px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect */
+.dropdown-submenu .dropdownn-item:hover {
+  background-color: #f8f9fa;
+  color: #0d6efd;
+}
+
+/* Remove any default bullet or circle symbol */
+.dropdown-submenu .dropdownn-item::before {
+  content: "";
+}
+
+/* Right arrow for submenu indicator */
+.dropdown-submenu > a::after {
+  {% comment %} content: "›"; {% endcomment %}
+  float: right;
+  font-size: 0.9rem;
+  opacity: 0.6;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.dropdown-submenu:hover > a::after {
+  transform: translateX(2px);
+  opacity: 1;
+}
+
+.dropdown-menu,
+.dropdownn-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+    body {
+      background-color: #f5f7fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .main-card {
+      background-color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      padding: 20px 30px;
+      margin-top: 30px;
+    }
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .btn-create {
+      background-color: #1a237e;
+      border: none;
+      font-weight: 500;
+      color: white;
+    }
+    .table th, .table td {
+      vertical-align: middle;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    /* ===== Service Details Modal Styling ===== */
+.modal-content {
+  border-radius: 20px;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #1a237e, #283593);
+  color: #fff;
+  border-bottom: none;
+  padding: 18px 25px;
+}
+
+.modal-title {
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+}
+
+.modal-body {
+  background-color: #f8f9fc;
+  padding: 25px 30px;
+  font-size: 14px;
+}
+
+.modal-body p {
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.modal-body strong {
+  color: #1a237e;
+}
+
+.modal-body hr {
+  border-top: 1px solid #e0e0e0;
+  margin: 20px 0;
+}
+
+.modal-body h6 {
+  font-weight: 600;
+  color: #1a237e;
+  margin-bottom: 10px;
+}
+
+/* Cost Summary */
+.modal-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 15px;
+}
+
+.modal-body ul li {
+  background: #fff;
+  margin-bottom: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.modal-body ul li:hover {
+  background-color: #f1f3ff;
+  transform: translateY(-1px);
+}
+
+/* Service Entries Table */
+#entriesTable {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+#entriesTable th {
+  background: #1a237e;
+  color: white;
+  font-weight: 500;
+  text-align: center;
+}
+
+#entriesTable td {
+  background: #fff;
+  vertical-align: middle;
+  text-align: center;
+  padding: 10px;
+}
+
+#entriesTable tr:hover td {
+  background-color: #f8f9ff;
+}
+
+/* Footer Buttons */
+.modal-footer {
+  border-top: 1px solid #e0e0e0;
+  padding: 15px 25px;
+  background: #f4f6fb;
+}
+
+.modal-footer .btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.modal-footer .btn-success {
+  background: linear-gradient(135deg, #4CAF50, #2E8B57);
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.modal-footer .btn-success:hover {
+  background: linear-gradient(135deg, #2E8B57, #4CAF50);
+  transform: scale(1.05);
+}
+
+
+</style>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <span class="v">V</span><span class="track360">Track360</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                  <li class="nav-item">
+                      <a class="nav-link dropdown-to" href="{% url 'dashboard' %}" id="mastersDropdown"  aria-expanded="false">
+                         <i class="bi bi-speedometer2">Dashboard</i> 
+                      </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="mastersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="bi bi-tools"></i> Masters
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="mastersDropdown">
+                <div id="main-content">
+                            <li><a class="dropdown-item" href="{% url 'manageparts' %}"><i class="bi bi-wrench-adjustable-circle"></i> Garage masters</a></li>
+                            <li><a class="dropdown-item" href="{% url 'create' %}"><i class="bi bi-truck-front-fill"></i> Vehicle Ownership</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inspection'%}"><i class="bi bi-compass"></i> Inspection types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'expense'%}"><i class="bi bi-graph-down-arrow"></i> Expense Types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'fueltype' %}"><i class="bi bi-fuel-pump-fill"></i> Fuel Types</a></li>
+                            <li><a class="dropdown-item" href="{% url 'service' %}"><i class="bi bi-person-workspace"></i> Service Types</a></li>
+                            
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        
+                        <a class="nav-link dropdown-toggle" href="#" id="vehiclesDriversDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-truck"></i> Garage
+                        </a>                        
+                        <ul class="dropdown-menu" aria-labelledby="garageDropdown">
+                            <li><a class="dropdown-item" href="{% url 'inspection_create'%}"><i class="bi bi-plus-square-fill"></i> Create new Incpection</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inspection_list' %}"><i class="bi bi-list"></i> Incpection Requests </a></li>
+                            <li><a class="dropdown-item" href="{% url 'completed_inspection_list'%}"><i class="bi bi-grid-3x3-gap-fill"></i> Completed Inspections </a></li>
+                            <li><a class="dropdown-item" href="{% url  'newquat'%}"><i class="bi bi-plus-circle-fill"></i> Create New Quotation </a></li>
+                            <li><a class="dropdown-item" href="{% url  'quatlist'%}"><i class="bi bi-file-text me-2"></i> All Quotation </a></li>
+                            <li><a class="dropdown-item" href="{% url  'approved_quotations'%}"><i class="bi bi-check-circle"></i> Approved Quotations </a></li>
+                           
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="vehiclesDriversDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-truck"></i> Vehicles & Drivers
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="vehiclesDriversDropdown">
+                            <li><a class="dropdown-item" href="{% url 'add_vehicle'%}"><i class="bi bi-plus-square-fill"></i> Add New Vehicle</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_vehicles'%}"><i class="bi bi-truck"></i> Vehicles</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_drivers'%}"><i class="bi bi-person"></i> Drivers</a></li>
+                            <li><a class="dropdown-item" href="{% url 'driver_reviews'%}"><i class="bi bi-star-fill"></i> Driver Reviews</a></li>
+                            
+                            
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="servicesFuelingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-fuel-pump"></i> Services & Fueling
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="servicesFuelingDropdown">
+                           <li><a class="dropdown-item" href="{% url 'service_create'%}"><i class="bi bi-patch-plus"></i> Create New Service</a></li>
+                            <li><a class="dropdown-item" href="{%url 'service_list'%}"><i class="bi-list-task"></i> All Services</a></li>
+                            <li><a class="dropdown-item" href="{%url 'manage_other_expenses'%}"><i class="bi-files"></i> Other Expenses</a></li>
+                            <li><a class="dropdown-item" href="{%url 'add_fueling'%}"><i class="bi-funnel"></i> New Fueling</a></li>
+                            <li><a class="dropdown-item" href="{%url 'fuel_report_list'%}"><i class="bi bi-list-ul"></i> Fueling Report</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manage_tyre'%}"><i class="bi-arrow-repeat"></i> Tyre Replacement</a></li>
+                            
+                            
+                        </ul>
+                    </li>
+                    
+                    </li>
+                    <li class="nav-item dropdown">
+                          <button class="dashboard-btn"> <i class="bi bi-tools"></i> Reports</button>
+
+                        <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
+                            <li><a class="dropdown-item" href="{% url 'typewise'%}"><i class="bi-car-front-fill"></i> Servive Type Wise</a></li>
+                            <li><a class="dropdown-item" href="{% url 'manageitems'%}"><i class="bi bi-box-seam-fill"></i> Parts Wise</a></li>
+                            <li><a class="dropdown-item" href="{% url 'purchase_list' %}"><i class="bi bi-cart-check-fill"></i> Purchase List</a></li>
+                            <li><a class="dropdown-item" href="{%url 'fuel_report_list'%}"><i class="bi-pie-chart"></i> Fueling Report</a></li>
+                             
+                               <li class="dropdown-submenu">
+                                  <a class="dropdownn-item dropdown-toggle" href="#">
+                                    <i class="bi bi-bell"></i> Vehicle Reminders
+                                  </a>
+                                  <ul class="dropdownn-menu">
+                                    <li><a class="dropdownn-item" href="{% url 'manage_insurances' %}">Vehicle Insurance</a></li>
+                                    <li><a class="dropdownn-item" href="{% url 'manage_registrations' %}">Vehicle Registration</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_roadtax'%}">Road Tax</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_permit'%}">Vehicle Permit</a></li>
+                                    <li><a class="dropdownn-item" href="{%url 'manage_puc'%}">Vehicle PUC</a></li>
+                                    
+                                    <li><a class="dropdownn-item" href="{%url 'manage_fitness'%}">Fitness Certificate</a></li>
+                                    
+                                    
+                                  </ul>
+                                </li>
+                            <li><a class="dropdown-item" href="#"><i class="bi-person-fill"></i>Drive Reminders</a></li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+                <button class="logout-btn">Logout</button>
+            </div>
+        </div>
+    </nav>
+<div class="container py-4">
+
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Service Type Wise Report</h5>
+
+      <form method="GET" action="">
+        <div class="row align-items-end">
+          <div class="col-md-4">
+            {% comment %} <label for="service_type" class="form-label">Select Service Type</label> {% endcomment %}
+            <select id="service_type" name="service_type" class="form-select">
+              <option value="">-- All Types --</option>
+              {% for type in service_types %}
+                <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>
+                  {{ type|title }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-search"></i> Search
+            </button>
+          </div>
+          <div class="col-md-2">
+            <a href="{% url 'typewise' %}" class="btn btn-secondary w-100">
+              <i class="bi bi-x-circle"></i> Clear
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  {% comment %} </div> {% endcomment %}
+
+  <!-- Service Table -->
+  {% comment %} <div class="card shadow-sm"> {% endcomment %}
+    <div class="card-body">
+      <h5 class="card-title mb-3">
+        {% if selected_type %}
+          {{ selected_type|title }} Services
+        {% else %}
+          All Services
+        {% endif %}
+      </h5>
+      <table class="table table-striped align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Service No</th>
+            <th>Title</th>
+            <th>Vehicle</th>
+            <th>Service Type</th>
+            <th>Status</th>
+            <th>Total</th>
+             <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in services %}
+          <tr>
+            <td>SR-{{ s.id }}</td>
+            <td>{{ s.service_title }}</td>
+            <td>{{ s.vehicle }}</td>
+            <td>{{ s.service_type }}</td>
+            <td>{{ s.status }}</td>
+            <td>₹ {{ s.total_amount|floatformat:2 }}</td>
+            <td>
+              <button class="btn btn-sm btn-primary view-btn"
+              data-bs-toggle="modal"
+              data-bs-target="#serviceModal"
+              data-service='{
+      "service_number": "{{ s.service_number|escapejs }}",
+      "service_title": "{{ s.service_title|escapejs }}",
+      "vehicle": "{{ s.vehicle|escapejs }}",
+      "plate_no": "{{ s.vehicle.plate_no|default:""|escapejs }}",
+      "service_type": "{{ s.service_type|escapejs }}",
+      "status": "{{ s.status|escapejs }}",
+      "priority": "{{ s.priority|escapejs }}",
+      "service_date": "{{ s.service_date|date:"M. d, Y" }}",
+      "next_service_date": "{{ s.next_service_date|date:"M. d, Y" }}",
+      "requested_by": "{{ s.requested_by|escapejs }}",
+      "created_date": "{{ s.created_at|date:"M. d, Y, P" }}",
+      "labor_amount": "{{ s.labor_amount }}",
+      "service_charge_amount": "{{ s.service_charge_amount }}",
+      "other_amount": "{{ s.other_amount }}",
+      "total_items_amount": "{{ s.total_items_amount }}",
+      {% comment %} "total_third_party_amount": "{{ s.total_third_party_amount }}", {% endcomment %}
+      "total_amount": "{{ s.total_amount }}"
+      {% comment %} "due_amount": "{{ s.due_amount }}" {% endcomment %}
+    }'
+    data-entries='[
+      {% for e in s.entries.all %}
+        {
+          "category": "{{ e.entry_part_category|escapejs }}",
+          "part": "{{ e.entry_part_name|escapejs }}",
+          "unit": "{{ e.entry_unit|escapejs }}",
+          "quantity": "{{ e.entry_quantity }}",
+          "price": "{{ e.entry_price }}",
+          "subtotal": "{{ e.entry_subtotal }}"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ]'>
+    <i class="bi bi-file-earmark-text"></i> Document
+  </button>
+</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="text-center text-muted">No services found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+<!-- Service Details Modal -->
+<div class="modal fade" id="serviceModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title">Service Details</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <p><strong>Service No:</strong> <span id="sno"></span></p>
+            <p><strong>Title:</strong> <span id="title"></span></p>
+            <p><strong>Vehicle:</strong> <span id="vehicle"></span></p>
+            <p><strong>Plate No:</strong> <span id="plate"></span></p>
+            <p><strong>Service Type:</strong> <span id="stype"></span></p>
+            <p><strong>Status:</strong> <span id="status"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Priority:</strong> <span id="priority"></span></p>
+            <p><strong>Service Date:</strong> <span id="sdate"></span></p>
+            <p><strong>Next Service:</strong> <span id="nsdate"></span></p>
+            <p><strong>Requested By:</strong> <span id="reqby"></span></p>
+            <p><strong>Created Date:</strong> <span id="cdate"></span></p>
+          </div>
+        </div>
+
+        <hr>
+
+        
+
+        <h6 class="fw-bold">Service Entries</h6>
+        <div class="table-responsive">
+          <table class="table table-bordered" id="entriesTable">
+            <thead class="table-light">
+              <tr>
+                <th>Category</th>
+                <th>Part Name</th>
+                <th>Unit</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      <hr>
+        <ul>
+          <h6 class="fw-bold">Cost Summary</h6>
+          <li>Labor: ₹ <span id="labor"></span></li>
+          <li>Service Charge: ₹ <span id="scharge"></span></li>
+          <li>Other: ₹ <span id="other"></span></li>
+          <li>Total Items: ₹ <span id="titems"></span></li>
+          {% comment %} <li>Third Party: ₹ <span id="tparty"></span></li> {% endcomment %}
+          <li><strong>Total: ₹ <span id="total"></span></strong></li>
+          {% comment %} <li>Due: ₹ <span id="due"></span></li> {% endcomment %}
+        </ul>
+
+        
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    
+        <button class="btn btn-success" onclick="printServiceDetails()">
+          <i class="bi bi-printer"></i> Print
+        </button>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.querySelectorAll('.view-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const s = JSON.parse(this.dataset.service);
+    const entries = JSON.parse(this.dataset.entries);
+
+    // Fill service details
+document.getElementById('sno').textContent = s.service_number || '-';
+document.getElementById('title').textContent = s.service_title || '-';
+document.getElementById('vehicle').textContent = s.vehicle || '-';
+document.getElementById('plate').textContent = s.plate_no || '-';
+document.getElementById('stype').textContent = s.service_type || '-';
+document.getElementById('status').textContent = s.status || '-';
+document.getElementById('priority').textContent = s.priority || '-';
+document.getElementById('sdate').textContent = s.service_date || '-';
+document.getElementById('nsdate').textContent = s.next_service_date || '-';
+document.getElementById('reqby').textContent = s.requested_by || '-';
+document.getElementById('cdate').textContent = s.created_date || '-';
+
+// --- Calculate Item Costs ---
+let totalItemsCost = 0;
+entries.forEach(e => {
+  const qty = parseInt(e.quantity) || 0;
+  const price = parseFloat(e.price) || 0;
+  totalItemsCost += qty * price;
+});
+
+// Fill cost summary
+document.getElementById('labor').textContent = parseFloat(s.labor_amount || 0).toFixed(2);
+document.getElementById('scharge').textContent = parseFloat(s.service_charge_amount || 0).toFixed(2);
+document.getElementById('other').textContent = parseFloat(s.other_amount || 0).toFixed(2);
+document.getElementById('titems').textContent = totalItemsCost.toFixed(2); // ✅ Item total shown here
+{% comment %} document.getElementById('tparty').textContent = parseFloat(s.total_third_party_amount || 0).toFixed(2); {% endcomment %}
+
+// --- Calculate Grand Total ---
+const grandTotal =
+  (parseFloat(s.labor_amount) || 0) +
+  (parseFloat(s.service_charge_amount) || 0) +
+  (parseFloat(s.other_amount) || 0) +
+  totalItemsCost +
+  (parseFloat(s.total_third_party_amount) || 0);
+
+document.getElementById('total').textContent = grandTotal.toFixed(2);
+{% comment %} document.getElementById('due').textContent = parseFloat(s.due_amount || 0).toFixed(2); {% endcomment %}
+
+// Fill service entries
+const tbody = document.querySelector('#entriesTable tbody');
+tbody.innerHTML = entries.map(e => {
+  const qty = parseInt(e.quantity) || 0;
+  const price = parseFloat(e.price) || 0;
+  const subtotal = qty * price;
+  return `
+    <tr>
+      <td>${e.category || '-'}</td>
+      <td>${e.part || '-'}</td>
+      <td>${e.unit || '-'}</td>
+      <td>${qty}</td>
+      <td>₹ ${price.toFixed(2)}</td>
+      <td>₹ ${subtotal.toFixed(2)}</td>
+    </tr>`;
+}).join('') || '<tr><td colspan="6" class="text-center text-muted">No parts added</td></tr>';
+  });
+});
+
+function printServiceDetails() {
+  const modalBody = document.querySelector('#serviceModal .modal-body').innerHTML;
+  const modalHeader = document.querySelector('#serviceModal .modal-header').innerHTML;
+
+  const printWindow = window.open('', '', 'height=700,width=900');
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Service Details Report</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+          body { font-family: 'Segoe UI', sans-serif; padding: 20px; }
+          h5 { text-align: center; margin-bottom: 20px; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+          th { background-color: #1a237e; color: white; }
+          ul { list-style: none; padding: 0; }
+          ul li { display: flex; justify-content: space-between; padding: 6px 10px; border-bottom: 1px solid #eee; }
+          strong { color: #1a237e; }
+          @media print {
+            button { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="text-center mb-4">
+          <h3 style="color:#1a237e;">VTrack360 Service Report</h3>
+          <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+          <hr>
+        </div>
+        <div>${modalHeader}</div>
+        <div>${modalBody}</div>
+      </body>
+    </html>
+  `);
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.print();
+  printWindow.close();
+}
+
+
+</script>
+</html>

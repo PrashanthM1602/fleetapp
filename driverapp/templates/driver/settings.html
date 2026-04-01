@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Settings</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ================= THEME ================= */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+:root {
+    --bg: #f2f2f2;
+    --card: #ffffff;
+    --text: #000;
+    --sub: #555;
+}
+
+.dark {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #fff;
+    --sub: #cbd5f5;
+}
+
+/* HEADER */
+.header {
+    background: #1976ff;
+    color: white;
+    padding: 14px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.back-btn {
+    font-size: 22px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* CONTENT */
+.container {
+    padding: 12px;
+}
+
+/* PROFILE */
+.profile-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.profile-name {
+    font-weight: bold;
+}
+
+/* SETTINGS */
+.setting-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.setting-desc {
+    font-size: 13px;
+    color: var(--sub);
+}
+
+/* SWITCH */
+.switch {
+    width: 42px;
+    height: 22px;
+    background: #ccc;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+.switch span {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: 0.3s;
+}
+
+.switch.active {
+    background: #22c55e;
+}
+
+.switch.active span {
+    left: 22px;
+}
+
+/* SELECT */
+select {
+    padding: 6px;
+}
+
+/* LOGOUT */
+.logout-btn {
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-top: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="back-btn" onclick="history.back()">←</div>
+    Settings
+</div>
+
+<div class="container">
+
+    <!-- PROFILE -->
+    <div class="profile-card">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" class="profile-pic">
+        <div>
+            <div class="profile-name" contenteditable="true" id="userName"></div>
+            <div id="userId"></div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div class="setting-card">
+        <div class="setting-row">
+            <div>
+                <strong>Notification Alerts</strong>
+                <div class="setting-desc">Receive trip & payment alerts</div>
+            </div>
+            <div class="switch" id="notifyToggle" onclick="toggle('notify')"><span></span></div>
+        </div>
+    </div>
+
+    <!-- LOCATION -->
+    <div class="setting-card">
+        <div class="setting-row">
+            <div>
+                <strong>Location Sharing</strong>
+                <div class="setting-desc">Share live GPS with control room</div>
+            </div>
+            <div class="switch" id="locationToggle" onclick="toggle('location')"><span></span></div>
+        </div>
+    </div>
+
+    <!-- DARK MODE -->
+    <div class="setting-card">
+        <div class="setting-row">
+            <div>
+                <strong>Dark Mode</strong>
+                <div class="setting-desc">Enable dark theme</div>
+            </div>
+            <div class="switch" id="darkToggle" onclick="toggle('dark')"><span></span></div>
+        </div>
+    </div>
+
+    <!-- LANGUAGE -->
+    <div class="setting-card">
+        <div class="setting-row">
+            <div>
+                <strong>Language</strong>
+                <div class="setting-desc">Select preferred language</div>
+            </div>
+            <select onchange="changeLanguage(this.value)">
+                <option>English</option>
+                <option>Hindi</option>
+                <option>Kannada</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- LOGOUT -->
+    <button class="logout-btn" onclick="logout()">Sign Out</button>
+
+</div>
+
+<script>
+/* ================= STATE ================= */
+const defaultSettings = {
+    name: "Royo User",
+    id: "Driver ID: 3226",
+    notify: true,
+    location: true,
+    dark: false,
+    language: "English"
+};
+
+let settings = JSON.parse(localStorage.getItem("settings")) || defaultSettings;
+save();
+
+/* ================= SAVE ================= */
+function save() {
+    localStorage.setItem("settings", JSON.stringify(settings));
+}
+
+/* ================= INIT ================= */
+userName.innerText = settings.name;
+userId.innerText = settings.id;
+
+function apply() {
+    toggleUI("notify", notifyToggle);
+    toggleUI("location", locationToggle);
+    toggleUI("dark", darkToggle);
+
+    document.body.classList.toggle("dark", settings.dark);
+}
+
+function toggleUI(key, el) {
+    el.classList.toggle("active", settings[key]);
+}
+
+/* ================= TOGGLE ================= */
+function toggle(key) {
+    settings[key] = !settings[key];
+    save();
+    apply();
+}
+
+/* ================= LANGUAGE ================= */
+function changeLanguage(lang) {
+    settings.language = lang;
+    save();
+}
+
+/* ================= NAME EDIT ================= */
+userName.addEventListener("blur", () => {
+    settings.name = userName.innerText;
+    save();
+});
+
+/* ================= LOGOUT ================= */
+function logout() {
+    localStorage.clear();
+    alert("Logged out successfully");
+    window.location.href = "dashboard.html";
+}
+
+/* ================= START ================= */
+apply();
+</script>
+
+</body>
+</html>
