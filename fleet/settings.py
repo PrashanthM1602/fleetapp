@@ -170,7 +170,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:8000",
     "https://daryl-knurled-myron.ngrok-free.dev",
-    "https://*.onrender.com"
+    "https://fleetapp-jym7.onrender.com"
 ]
 
 LOGIN_URL = 'driver_login'
@@ -259,3 +259,6 @@ AWS_S3_SIGNATURE_VERSION = "s3v4"
 AWS_S3_FILE_OVERWRITE = False
 
 MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.ap-southeast-2.amazonaws.com/"
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
