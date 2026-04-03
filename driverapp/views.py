@@ -19,7 +19,7 @@ def login_view(request):
             driver = Driver.objects.get(driver_code=driver_code)
 
             response = requests.post(
-                "http://127.0.0.1:8000/api/jwt-login/",   # ✅ fleetapp JWT API
+                "https://fleetapp-jym7.onrender.com/api/jwt-login/",   # ✅ fleetapp JWT API
                 json={"driver_code": driver_code}
             )
 
