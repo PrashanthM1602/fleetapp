@@ -251,7 +251,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
 
-    document.getElementById('installBtn').style.display = 'inline-block';
+    document.getElementById('installCard').style.display = 'flex';;
 });
 
 document.getElementById('installBtn').addEventListener('click', async () => {
