@@ -7,45 +7,50 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from fleetapp.models import Driver
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib.auth.models import User
+from django.views.decorators.csrf import ensure_csrf_cookie
+import requests
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from fleetapp.models import Driver
+from rest_framework_simplejwt.tokens import RefreshToken
 
 # ---------------- LOGIN ----------------
 @ensure_csrf_cookie
 def login_view(request):
     if request.method == "POST":
-        request.session.flush() 
+        request.session.flush()
         driver_code = request.POST.get('driver_code')
 
         try:
+            # ✅ Check driver
             driver = Driver.objects.get(driver_code=driver_code)
 
-            response = requests.post(
-                "https://fleetapp-jym7.onrender.com/api/jwt-login/",   # ✅ fleetapp JWT API
-                json={"driver_code": driver_code}
-            )
+            # ✅ Create/get Django user
+            user, created = User.objects.get_or_create(username=driver.driver_code)
 
-            data = response.json()
+            # ✅ Generate JWT
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
 
-            if 'access' in data:
-                # ✅ store JWT token
-                request.session['jwt_token'] = data['access']
-                print("LOGIN TOKEN:", data['access'])
-                request.session['driver_name'] = data['driver_name']
-                request.session['driver_id'] = driver.id 
+            # ✅ Store in session
+            request.session['jwt_token'] = access_token
+            request.session['driver_id'] = driver.id
+            request.session['driver_name'] = driver.driver_name
 
-                return redirect('driver_home')
+            return redirect('driver_home')
 
-            else:
-                return render(request, 'driver/login.html', {
-                    'error': 'Invalid driver code'
-                })
-
-        except Exception as e:
-            print("ERROR:", e)
+        except Driver.DoesNotExist:
             return render(request, 'driver/login.html', {
-                'error': 'API not reachable'
+                'error': 'Invalid driver code'
             })
 
     return render(request, 'driver/login.html')
+
+
 
 
 # ---------------- HOME ----------------
