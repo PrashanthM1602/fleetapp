@@ -131,9 +131,60 @@
                 transform: translateY(0);
             }
         }
+
+        /* INSTALL CARD */
+.install-card {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #e3f2fd, #ffffff);
+    border: 1px solid #d0e3ff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    animation: fadeIn 0.5s ease;
+}
+
+.install-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.install-icon {
+    font-size: 24px;
+}
+
+.install-text strong {
+    font-size: 14px;
+    color: #2a5298;
+}
+
+.install-text p {
+    font-size: 11px;
+    color: #666;
+    margin: 0;
+}
+
+.install-btn {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    background: #2a5298;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.install-btn:hover {
+    background: #1e3c72;
+}
     </style>
 </head>
 <body>
+
 
 <div class="container">
     <div class="login-box">
@@ -165,15 +216,21 @@
         <div class="footer-text">
             Secure Fleet Management System
         </div>
+        <div id="installCard" class="install-card" style="display:none;">
+    <div class="install-content">
+        <div class="install-icon">📱</div>
+        <div class="install-text">
+            <strong>Install Driver App</strong>
+            <p>Get faster access & better experience</p>
+        </div>
+    </div>
+    <button id="installBtn" class="install-btn">Install</button>
+</div>
 
     </div>
 </div>
 
-<div style="text-align:center; margin-top:15px;">
-  <button id="installBtn" class="btn btn-primary" style="display:none;">
-    📱 Install Driver App
-  </button>
-</div>
+
 
 <script>
 function togglePassword() {
