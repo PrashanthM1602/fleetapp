@@ -1914,7 +1914,7 @@ def manage_puc(request):
         'vehicles': vehicles,
         'today': today,
     }
-    return render(request, 'puc.html', context)
+    return render(request, 'PUC.html', context)
 
 def manage_permit(request):
     vehicles = Vehicle.objects.all().order_by('permit_last')
