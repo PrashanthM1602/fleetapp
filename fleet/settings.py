@@ -491,18 +491,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 # AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
 
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+# STORAGES = {
+#     "default": {
+#         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+#     },
+#     "staticfiles": {
+#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#     },
+# }
 
-AWS_QUERYSTRING_AUTH = True
-AWS_S3_SIGNATURE_VERSION = "s3v4"
-AWS_S3_FILE_OVERWRITE = False
+# AWS_QUERYSTRING_AUTH = True
+# AWS_S3_SIGNATURE_VERSION = "s3v4"
+# AWS_S3_FILE_OVERWRITE = False
 
 # MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.ap-southeast-2.amazonaws.com/"
 
